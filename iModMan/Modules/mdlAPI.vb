@@ -13,6 +13,8 @@ Module mdlAPI
     Public Declare Function GetMD5FileHash Lib "iCrypto.dll" (ByVal sFilePath As String, ByVal Hash As String) As Boolean
     Public Declare Function GetSHA256FileHash Lib "iCrypto.dll" (ByVal sFilePath As String, ByVal Hash As String) As Boolean
 
+    Public Declare Function DiasPackFile Lib "iDias.dll" (ByVal sSource As String, ByVal sDestination As String) As Boolean
+
     Public Declare Sub DisplayError Lib "iNative.dll" (ByVal sFunc As String)
     Public Declare Sub DisplayErrorEx Lib "iNative.dll" (ByVal sModule As String, ByVal sFunct As String)
     Public Declare Function IsInternetAvailable Lib "iNative.dll" () As Boolean
