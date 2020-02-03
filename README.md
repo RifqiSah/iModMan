@@ -1,8 +1,8 @@
-# INFLauncher
-Simpe program launcher
+# iModMan
+Informate Dragon Nest Mod Manager
 
 ### Deskripsi
-Repo ini merupakan repo dari program launcher milik Informate. Launcher ini bekerja secara online jadi pastikan koneksi internet Anda tersedia/tidak sedang offline.
+Repo ini merupakan repo dari program Dragon Nest Mod Manager milik Informate. Program ini bekerja secara online jadi pastikan koneksi internet Anda tersedia/tidak sedang offline.
 
 ### Fitur
 - [x] Base program.
@@ -12,6 +12,7 @@ Repo ini merupakan repo dari program launcher milik Informate. Launcher ini beke
 - [X] Auto expand mod file.
 - [X] Program icon.
 - [X] Auto update program if newest version found.
+- [ ] Add modules for EZ updating.
 - [ ] Modify basic UI, like Avansi :)
 - [ ] Additional feature.
 - [ ] Future ~~
