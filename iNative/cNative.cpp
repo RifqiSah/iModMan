@@ -14,6 +14,16 @@ LPSTR getCurrentDateTime(BOOL withTime) {
 	return buf;
 }
 
+PCHAR substr(PCHAR arr, INT begin, INT len)
+{
+	PCHAR res = new CHAR[len];
+	for (INT i = 0; i < len; i++)
+		res[i] = *(arr + begin + i);
+
+	res[len] = 0;
+	return res;
+}
+
 VOID WINAPI GetLocalPath(LPSTR sPath) {
 	CHAR path[MAX_PATH];
 
@@ -75,7 +85,7 @@ VOID WINAPI WriteLog(LPSTR sModule, INT iType, LPSTR sMessage) {
 	// PathRemoveExtension(sModule);
 
 	strcat(sFileLog, "\\iModMan\\logs\\");
-	strcat(sFileLog, sModule);
+	strcat(sFileLog, substr(sModule, 0, (strlen(sModule) - 1) - (strstr(sModule, ":") - sModule)));
 	strcat(sFileLog, "_");
 	strcat(sFileLog, getCurrentDateTime(false));
 	strcat(sFileLog, ".log");
