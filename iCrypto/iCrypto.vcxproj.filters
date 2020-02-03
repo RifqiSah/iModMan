@@ -2,34 +2,34 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="cHash.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cMain.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Header">
+    <Filter Include="Header Files">
       <UniqueIdentifier>{3c5915be-551b-4052-b475-e396b5af4682}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source">
+    <Filter Include="Source Files">
       <UniqueIdentifier>{f5c1bc15-c8df-4736-a1c5-590880706f85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
+    <Filter Include="Resource Files">
       <UniqueIdentifier>{871bdea2-d0e7-4709-8516-79e0bea5d6fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="hMain.h">
-      <Filter>Header</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
-      <Filter>Resource</Filter>
+      <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>

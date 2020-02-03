@@ -1,3 +1,4 @@
 LIBRARY iCrypto
 EXPORTS
-   GetSHA265File		@1
+	GetMD5FileHash
+	GetSHA256FileHash

@@ -1,0 +1,8 @@
+LIBRARY iNative
+EXPORTS
+	DisplayError
+	DisplayErrorEx
+	GetLocalPath
+	IsInternetAvailable
+	IsAppAplreadyRunning
+	WriteLog

@@ -47,7 +47,7 @@ Public Class frmDownloader
         Dim fileHash As String = (CType((sender), WebClient)).QueryString("file_hash")
 
         If Not e.Cancelled AndAlso e.Error Is Nothing Then
-            Dim sHash As String = resolveModule("iCore.dll", "clsCrypto").SHA256CheckSum(filePath)
+            Dim sHash As String = SHA256CheckSum(filePath)
             If (String.Compare(sHash, fileHash) <> 0) Then
                 MessageBox.Show("Pengunduhan gagal!" & vbCrLf & "File '" & fileName & "' rusak! Silahkan buka ulang aplikasi untuk mengunduh ulang.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 File.Delete(filePath)
