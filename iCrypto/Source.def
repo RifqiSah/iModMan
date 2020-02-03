@@ -1,0 +1,3 @@
+LIBRARY iCrypto
+EXPORTS
+   GetSHA265File		@1
