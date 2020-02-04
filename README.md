@@ -18,7 +18,7 @@ Mod yang akan digunakan pada iModMan adalah mod yang bersifat private, hanya ang
 - [ ] Add modules for EZ updating.
 - [ ] Modify basic UI, like Avansi :)
 - [ ] Integrate with Divinitor Athena.
-  - [ ] Auto detect Athena executable.
+  - [X] Auto detect Athena executable.
   - [ ] Eris mod integration (if i can contact Vahr).
 - [ ] Integrate with DNModder.
   - [ ] Make DNModder mod.
