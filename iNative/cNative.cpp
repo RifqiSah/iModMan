@@ -85,7 +85,7 @@ VOID WINAPI WriteLog(LPSTR sModule, INT iType, LPSTR sMessage) {
 	// PathRemoveExtension(sModule);
 
 	strcat(sFileLog, "\\iModMan\\logs\\");
-	strcat(sFileLog, substr(sModule, 0, (strlen(sModule) - 1) - (strstr(sModule, ":") - sModule)));
+	strcat(sFileLog, substr(sModule, 0, (INT)(strchr(sModule, ':') - sModule)));
 	strcat(sFileLog, "_");
 	strcat(sFileLog, getCurrentDateTime(false));
 	strcat(sFileLog, ".log");
