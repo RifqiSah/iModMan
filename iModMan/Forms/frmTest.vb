@@ -2,17 +2,21 @@
 
 Public Class frmTest
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim hash As String = Space(256)
-        Dim ret As Integer
+        Dim str As String = Space(1024 * 1024)
+        Dim ret As Boolean = ReadPak(TextBox1.Text, str)
 
-        ret = GetMD5FileHash("G:\iModMan\bin\Newtonsoft.Json.dlls", hash)
-        WriteLog("iModMan", 1, "Coba ngetes aja ada isinya ga")
+        If (ret = False) Then
+            MsgBox("Ada Error!")
+            Exit Sub
+        End If
 
-        TextBox1.Text = hash
+        TextBox2.Text = str
     End Sub
 
     Private Sub frmTest_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        LoadWin32Library(Application.StartupPath & "\iModMan\zlibwapi.dll")
         LoadWin32Library(Application.StartupPath & "\iModMan\iNative.dll")
         LoadWin32Library(Application.StartupPath & "\iModMan\iCrypto.dll")
+        LoadWin32Library(Application.StartupPath & "\iModMan\iDias.dll")
     End Sub
 End Class

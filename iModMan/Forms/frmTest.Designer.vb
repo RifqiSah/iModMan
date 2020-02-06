@@ -40,9 +40,9 @@ Partial Class frmTest
         '
         Me.TextBox1.Location = New System.Drawing.Point(13, 43)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ReadOnly = True
         Me.TextBox1.Size = New System.Drawing.Size(537, 21)
         Me.TextBox1.TabIndex = 1
+        Me.TextBox1.Text = "H:\Tools\DN Tools\DN PAK File\00Resource_dv_lk_cyclones.pak"
         '
         'TextBox2
         '

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F5BE9CFC-CDDF-4518-B809-A00BF998C137}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Sub Main</StartupObject>
+    <StartupObject>iModMan.frmTest</StartupObject>
     <RootNamespace>iModMan</RootNamespace>
     <AssemblyName>iModMan</AssemblyName>
     <FileAlignment>512</FileAlignment>
