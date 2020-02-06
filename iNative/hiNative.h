@@ -12,9 +12,11 @@
 #pragma warning(disable: 4172)
 
 // Internal and Simple Func
-INT Replace(LPSTR str, CHAR ch1, CHAR ch2);
-VOID UCase(LPSTR s);
-VOID LCase(LPSTR s);
+LPSTR	getCurrentDateTime(BOOL withTime);
+PCHAR	substr(PCHAR arr, INT begin, INT len);
+INT		Replace(LPSTR str, CHAR ch1, CHAR ch2);
+VOID	UCase(LPSTR s);
+VOID	LCase(LPSTR s);
 
 // Exported Func
 VOID	WINAPI DisplayError(LPTSTR lpszFunction);
