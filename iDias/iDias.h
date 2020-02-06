@@ -1,6 +1,7 @@
 #include <Windows.h>
-#include <map>
 #include <iostream>
+#include <stdio.h>
+#include <Shlwapi.h>
 
 using namespace std;
 

@@ -1,7 +1,7 @@
 #include "iDias.h"
-#include "pak.h"
 
-CPakFile	g_PakFile;
+#include "zlib/zlib.h"
+#pragma comment(lib, "..\\lib\\zlibwapi.lib")
 
 #define MSGLEN			1024 * 1000
 #define HEADER_SIZE		1024
@@ -24,6 +24,52 @@ typedef struct _PAK_FILEINFO {
 	UINT UnknownA; // Unknown. Seems to have no effect.
 	// UnknownB = 40 bytes
 } PAK_FILEINFO, *PPAK_FILEINFO;
+
+std::string ExtractFileName(const std::string& fullPath)
+{
+	const size_t lastSlashIndex = fullPath.find_last_of("/\\");
+	return fullPath.substr(lastSlashIndex + 1);
+}
+
+VOID CreateDirectoryAndSub(LPSTR path) {
+	CHAR folder[MAX_PATH];
+	PCHAR end;
+
+	ZeroMemory(folder, MAX_PATH * sizeof(CHAR));
+	end = strchr(path, L'\\');
+
+	while (end != NULL) {
+		strncpy(folder, path, end - path + 1);
+		if (!CreateDirectory(folder, NULL)) {
+			DWORD err = GetLastError();
+
+			if (err != ERROR_ALREADY_EXISTS)
+			{
+				// do whatever handling you'd like
+			}
+		}
+
+		end = strchr(++end, L'\\');
+	}
+}
+
+LPSTR RemoveFilename(LPSTR myStr) {
+	LPSTR retStr;
+	LPSTR lastExt;
+
+	if (myStr == NULL)
+		return NULL;
+
+	if ((retStr = (PCHAR)malloc(strlen(myStr) + 1)) == NULL)
+		return NULL;
+
+	strcpy(retStr, myStr);
+	lastExt = strrchr(retStr, '\\');
+	if (lastExt != NULL)
+		*lastExt = '\0';
+
+	return retStr;
+}
 
 BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 	HANDLE hFile;
@@ -96,7 +142,7 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 	}
 
 	UINT fCount = pakHeader->FileCount;
-	PPAK_FILEINFO *fileEntries = new PPAK_FILEINFO[fCount];
+	PPAK_FILEINFO fileEntries = new PAK_FILEINFO[fCount];
 
 	for (UINT i = 0; i < fCount; i++) {
 		PPAK_FILEINFO pakFileInfo = {};
@@ -104,13 +150,63 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 		ReadFile(hFile, lBuffer, FILE_INFO_SIZE, &bytesRead, NULL);
 		pakFileInfo = (PPAK_FILEINFO)lBuffer;
 
-		// msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "[%03d] [0x%08X] %s\r\n", i + 1, pakFileInfo->FileDataOffset, pakFileInfo->FilePath);
-		fileEntries[i] = pakFileInfo;
+		msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "[%03d] [0x%08X] %s\r\n", i + 1, pakFileInfo->FileDataOffset, pakFileInfo->FilePath);
+		fileEntries[i] = *pakFileInfo;
 	}
 	// -- End File Entry --
 
 	// -- Decompressing --
+	for (UINT i = 0; i < fCount; i++) {
+		LPVOID sBuffFromPak;
+		LPVOID sBuffAfterDecompress;
+		PAK_FILEINFO fInfo = fileEntries[i];
 
+		UINT rawSize = fInfo.RawSize;
+		UINT realSize = fInfo.RealSize;
+		LPSTR virtualPath = fInfo.FilePath;
+		DWORD filePointer = fInfo.FileDataOffset;
+
+		sBuffFromPak = malloc(rawSize);
+		sBuffAfterDecompress = malloc(realSize);
+
+		SetFilePointer(hFile, filePointer, NULL, NULL);
+		ReadFile(hFile, sBuffFromPak, rawSize, &bytesRead, NULL);
+
+		// zlib inflate start
+		z_stream infstream;
+		infstream.zalloc = Z_NULL;
+		infstream.zfree = Z_NULL;
+		infstream.opaque = Z_NULL;
+
+		infstream.avail_in = rawSize; // size of input
+		infstream.next_in = (Bytef *)sBuffFromPak; // input char array
+		infstream.avail_out = realSize; // size of output
+		infstream.next_out = (Bytef *)sBuffAfterDecompress; // output char array
+		
+		// the actual DE-compression work.
+		inflateInit(&infstream);
+		inflate(&infstream, Z_NO_FLUSH);
+		inflateEnd(&infstream);
+
+		// Write to file
+		HANDLE hdFile;
+		CHAR sDir[MAX_PATH];
+		
+		strcpy(sDir, "G:\\iModMan\\bin\\iModMan\\");
+		strcat(sDir, ExtractFileName(sSource).c_str());
+		strcat(sDir, RemoveFilename(virtualPath));
+		strcat(sDir, "\\");
+		
+		CreateDirectoryAndSub(sDir);
+		strcat(sDir, ExtractFileName(virtualPath).c_str());
+
+		hdFile = CreateFile(sDir, GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		WriteFile(hdFile, sBuffAfterDecompress, realSize, NULL, NULL);
+		CloseHandle(hdFile);
+
+		free(sBuffFromPak);
+		free(sBuffAfterDecompress);
+	}
 	// -- End Decompressing --
 
 	strcpy(sMessage, msg);
@@ -122,12 +218,6 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 
 BOOL WINAPI DiasPackFile(LPSTR sSource, LPSTR sDestination) {
 	BOOL ret = FALSE;
-	
-	if (!g_PakFile.CreatePak(sSource, sDestination))
-		WriteLog((LPSTR)"iDias:cPack", 3, (LPSTR)"Unable to create .dias.pak file! There was a compilation error.");
-	else
-		ret = TRUE;
-
 	return ret;
 }
 

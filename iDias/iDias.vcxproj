@@ -66,6 +66,7 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <ModuleDefinitionFile>Source.def</ModuleDefinitionFile>
       <ImportLibrary>$(SolutionDir)lib\$(TargetName).lib</ImportLibrary>
+      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -86,7 +87,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="iDias.h" />
-    <ClInclude Include="pak.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -95,7 +95,6 @@
   <ItemGroup>
     <ClCompile Include="cMain.cpp" />
     <ClCompile Include="cPack.cpp" />
-    <ClCompile Include="Pak.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.def" />

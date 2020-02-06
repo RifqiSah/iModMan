@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Raymond Pak">
-      <UniqueIdentifier>{fa12a2ea-5088-40ae-910c-e84f2cf5c0a7}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -23,9 +20,6 @@
     </ClInclude>
     <ClInclude Include="iDias.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pak.h">
-      <Filter>Raymond Pak</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -39,9 +33,6 @@
     </ClCompile>
     <ClCompile Include="cPack.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Pak.cpp">
-      <Filter>Raymond Pak</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
