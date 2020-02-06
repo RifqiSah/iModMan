@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iCrypto", "iCrypto\iCrypto.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iNative", "iNative\iNative.vcxproj", "{9B57C735-7354-45F2-B9C6-A1F0C6AC7BDA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iDias", "iDias\iDias.vcxproj", "{85C042F8-EC82-4AB6-95A7-6EB1D1733BF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|x64 = Release|x64
@@ -27,6 +29,10 @@ Global
 		{9B57C735-7354-45F2-B9C6-A1F0C6AC7BDA}.Release|x64.Build.0 = Release|x64
 		{9B57C735-7354-45F2-B9C6-A1F0C6AC7BDA}.Release|x86.ActiveCfg = Release|Win32
 		{9B57C735-7354-45F2-B9C6-A1F0C6AC7BDA}.Release|x86.Build.0 = Release|Win32
+		{85C042F8-EC82-4AB6-95A7-6EB1D1733BF2}.Release|x64.ActiveCfg = Release|x64
+		{85C042F8-EC82-4AB6-95A7-6EB1D1733BF2}.Release|x64.Build.0 = Release|x64
+		{85C042F8-EC82-4AB6-95A7-6EB1D1733BF2}.Release|x86.ActiveCfg = Release|Win32
+		{85C042F8-EC82-4AB6-95A7-6EB1D1733BF2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
