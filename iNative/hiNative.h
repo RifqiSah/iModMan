@@ -20,6 +20,7 @@ VOID	WINAPI strlcase(LPSTR s);
 LPSTR	WINAPI ExtractFileName(LPSTR fullPath);
 VOID	WINAPI CreateDirectoryAndSub(LPSTR path);
 LPSTR	WINAPI RemoveFilename(LPSTR myStr);
+BOOL	WINAPI DirectoryExists(LPSTR szPath);
 
 // Exported Func
 VOID	WINAPI DisplayError(LPTSTR lpszFunction);

@@ -14,9 +14,9 @@ LPSTR WINAPI getCurrentDateTime(BOOL withTime) {
 	return buf;
 }
 
-PCHAR WINAPI substr(PCHAR arr, INT begin, INT len)
+LPSTR WINAPI substr(LPSTR arr, INT begin, INT len)
 {
-	PCHAR res = new CHAR[len];
+	LPSTR res = new CHAR[len];
 	for (INT i = 0; i < len; i++)
 		res[i] = *(arr + begin + i);
 
@@ -57,16 +57,9 @@ VOID WINAPI strlcase(LPSTR s)
 		*p = (CHAR)tolower(*p);
 }
 
-
 LPSTR WINAPI ExtractFileName(LPSTR fullPath)
 {
-	CHAR fName[MAX_PATH];
-	INT pos = fullPath - strrchr(fullPath, '\\');
-
-	pos *= -1;
-	strcpy(fName, substr(fullPath, pos + 1, strlen(fullPath) - 1));
-
-	return fName;
+	return PathFindFileName(fullPath);
 }
 
 VOID WINAPI CreateDirectoryAndSub(LPSTR path) {
@@ -107,4 +100,10 @@ LPSTR WINAPI RemoveFilename(LPSTR myStr) {
 		*lastExt = '\0';
 
 	return retStr;
+}
+
+BOOL WINAPI DirectoryExists(LPSTR szPath)
+{
+	DWORD dwAttrib = GetFileAttributes(szPath);
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
