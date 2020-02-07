@@ -12,11 +12,14 @@
 #pragma warning(disable: 4172)
 
 // Internal and Simple Func
-LPSTR	getCurrentDateTime(BOOL withTime);
-PCHAR	substr(PCHAR arr, INT begin, INT len);
-INT		Replace(LPSTR str, CHAR ch1, CHAR ch2);
-VOID	UCase(LPSTR s);
-VOID	LCase(LPSTR s);
+LPSTR	WINAPI getCurrentDateTime(BOOL withTime);
+PCHAR	WINAPI substr(PCHAR arr, INT begin, INT len);
+INT		WINAPI strreplace(LPSTR str, CHAR ch1, CHAR ch2);
+VOID	WINAPI strucase(LPSTR s);
+VOID	WINAPI strlcase(LPSTR s);
+LPSTR	WINAPI ExtractFileName(LPSTR fullPath);
+VOID	WINAPI CreateDirectoryAndSub(LPSTR path);
+LPSTR	WINAPI RemoveFilename(LPSTR myStr);
 
 // Exported Func
 VOID	WINAPI DisplayError(LPTSTR lpszFunction);

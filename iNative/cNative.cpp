@@ -40,8 +40,8 @@ VOID WINAPI DisplayErrorEx(LPSTR sModule, LPTSTR lpszFunction) {
 	if (FAILED(StringCchPrintf((LPTSTR)lpDisplayBuf, LocalSize(lpDisplayBuf) / sizeof(TCHAR), TEXT("\'%s\' failed with error code %d as follows:\n%s"), lpszFunction, dw, lpMsgBuf)))
 		printf("FATAL ERROR: Unable to output error code.\n");
 
-	Replace((LPSTR)lpDisplayBuf, '\n', ' ');
-	Replace((LPSTR)lpDisplayBuf, '\r\n', ' ');
+	strreplace((LPSTR)lpDisplayBuf, '\n', ' ');
+	strreplace((LPSTR)lpDisplayBuf, '\r\n', ' ');
 	WriteLog(sModule, 3, (LPSTR)lpDisplayBuf);
 	
 	MessageBox(GetActiveWindow(), (LPSTR)lpDisplayBuf, "Error", MB_OK | MB_ICONERROR);

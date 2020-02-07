@@ -10,6 +10,6 @@ using namespace std;
 
 BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage);
 BOOL WINAPI DiasPackFile(LPSTR sSource, LPSTR sDestination);
-VOID WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination);
-VOID WINAPI DiasPackBuffer(LPVOID sBuffer, LPSTR sDestination);
-VOID WINAPI DiasUnpackBuffer(LPVOID sBuffer, LPSTR sDestination);
+BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination);
+BOOL WINAPI DiasPackBuffer(LPVOID sBuffer, LPSTR sDestination);
+BOOL WINAPI DiasUnpackBuffer(LPVOID sBuffer, LPSTR sDestination);

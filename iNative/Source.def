@@ -1,5 +1,16 @@
 LIBRARY iNative
 EXPORTS
+	; Simple funct
+	getCurrentDateTime
+	substr
+	strreplace
+	strucase
+	strlcase
+	ExtractFileName
+	CreateDirectoryAndSub
+	RemoveFilename
+
+	; External
 	DisplayError
 	DisplayErrorEx
 	GetLocalPath
