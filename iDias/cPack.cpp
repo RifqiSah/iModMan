@@ -99,12 +99,12 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 	sprintf(sFile, "%s\\%s", sSource, "test.pak");
 	hFile = CreateFile(sFile, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	INT fCount = 2;
+	INT fCount = 5;
 	UINT fileOffset = HEADER_SIZE;
 	PPAK_FILEINFO fInfo = new PAK_FILEINFO[fCount];
 	LPVOID fileTotalBuffer;
 
-	for (INT i = 0; i < 2; i++) {
+	for (INT i = 0; i < fCount; i++) {
 		HANDLE hsFile;
 		DWORD hSize;
 		LPVOID fileBuffer;
@@ -159,11 +159,11 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 		pakFileInfo.RawSize = hSize;
 		pakFileInfo.CompressedSize = defstream.total_out;
 		pakFileInfo.FileDataOffset = fileOffset;
-		sprintf(pakFileInfo.FilePath, "\\File no %d.testing", i + 1);
+		sprintf(pakFileInfo.FilePath, "\\File_no_%d.testing", i + 1);
 
 		fInfo[i] = pakFileInfo;
 
-		fileOffset += defstream.total_out + 1;
+		fileOffset += (defstream.total_out + 1);
 	}
 
 	pakHeader.FileCount = fCount;
@@ -182,7 +182,7 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 	CloseHandle(tf);
 	DeleteFile("G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\temppak.tmp");
 
-	for (INT i = 0; i < 2; i++)
+	for (INT i = 0; i < fCount; i++)
 		WriteFile(hFile, &fInfo[i], FILE_INFO_SIZE, NULL, NULL);
 
 	CloseHandle(hFile);
@@ -281,7 +281,6 @@ BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination) {
 	}
 	// -- End File Entry --
 
-	/*
 	// -- Decompressing --
 	for (UINT i = 0; i < fCount; i++) {
 		LPVOID sBuffFromPak;
@@ -335,10 +334,10 @@ BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination) {
 		free(sBuffAfterDecompress);
 	}
 	// -- End Decompressing --
-	*/
 
-	// strcpy(sMessage, msg);
-	strcpy(sDestination, msg);
+	if (!DirectoryExists(sDestination)) {
+		strcpy(sDestination, msg);
+	}
 
 	VirtualFree(lBuffer, hSize, MEM_RELEASE);
 	CloseHandle(hFile);
