@@ -25,41 +25,6 @@ typedef struct _PAK_FILEINFO {
 	// UnknownB = 40 bytes
 } PAK_FILEINFO, *PPAK_FILEINFO;
 
-#define OBJ_MEMDESC(o) { sizeof(o), (uint8_t*)&(o) }
-#define DESC_COUNT(descs) (sizeof(descs) / sizeof((descs)[0]))
-
-struct memdesc
-{
-	size_t length;
-	uint8_t * ptr;
-};
-
-#define MIN(a,b) ((a) < (b) ? (a) : (b))
-
-size_t memcat(uint8_t * dst,
-	struct memdesc * descriptors,
-	size_t descriptor_count,
-	size_t max_len)
-{
-	size_t remaining = max_len;
-	uint8_t * next = dst;
-
-	for (size_t i = 0; i < descriptor_count; i++)
-	{
-		struct memdesc * desc = &descriptors[i];
-		size_t copy_len = MIN(remaining, desc->length);
-
-		memcpy(next, desc->ptr, copy_len);
-		next += copy_len;
-		remaining -= copy_len;
-
-		if (remaining <= 0)
-			break;
-	}
-
-	return (max_len - remaining);
-}
-
 VOID dirListFiles(LPSTR startDir)
 {
 	HANDLE hFind;
