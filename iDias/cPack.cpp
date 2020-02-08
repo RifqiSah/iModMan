@@ -25,6 +25,8 @@ typedef struct _PAK_FILEINFO {
 	// UnknownB = 40 bytes
 } PAK_FILEINFO, *PPAK_FILEINFO;
 
+CHAR pakFileTemp[] = "G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\temppak.tmp";
+
 VOID dirListFiles(LPSTR startDir)
 {
 	HANDLE hFind;
@@ -80,23 +82,16 @@ VOID dirListFiles(LPSTR startDir)
 	}
 }
 
-PVOID memcat(PVOID s1, size_t n1, PVOID s2, size_t n2) {
-	memcpy((PCHAR)s1 + n1, s2, n2);
-	return s1;
+BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
+	return TRUE;
 }
 
-BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
-	CHAR msg[MSGLEN];
-	INT msg_len = 0;
-
-	CHAR DataBuffer[] = "Haiii cobalah ini datanya wkkwkw";
-
+BOOL WINAPI DiasPackFile(LPSTR sSource, LPSTR sDestination) {
 	CHAR sFile[MAX_PATH];
 	HANDLE hFile;
 	PAK_HEADER pakHeader;
-	PAK_FILEINFO pakFileInfo;
 
-	sprintf(sFile, "%s\\%s", sSource, "test.pak");
+	strcpy(sFile, sSource);
 	hFile = CreateFile(sFile, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	INT fCount = 5;
@@ -107,27 +102,31 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 	for (INT i = 0; i < fCount; i++) {
 		HANDLE hsFile;
 		DWORD hSize;
-		LPVOID fileBuffer;
-		LPVOID fileBufferOut;
 
 		hsFile = CreateFile("G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\dv_blank_model_cyclone_original.skn", GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (!hsFile) {
-			DisplayErrorEx((LPSTR)"iDias:cPack:ReadingFile", (LPSTR)"CreateFile");
+			DisplayErrorEx((LPSTR)"iDias:cPack:DiasPackFile", (LPSTR)"CreateFile");
 			return FALSE;
 		}
 
 		hSize = GetFileSize(hsFile, NULL);
 		if (!hSize) {
-			DisplayErrorEx((LPSTR)"iDias:cPack:ReadingFile", (LPSTR)"GetFileSize");
+			DisplayErrorEx((LPSTR)"iDias:cPack:DiasPackFile", (LPSTR)"GetFileSize");
 			CloseHandle(hsFile);
 
 			return FALSE;
 		}
 
-		fileBuffer = malloc(hSize);
-		fileBufferOut = malloc(hSize);
+		LPVOID fileBuffer = malloc(hSize);
+		LPVOID fileBufferOut = malloc(hSize);
 
-		ReadFile(hsFile, fileBuffer, hSize, NULL, NULL);
+		if (!ReadFile(hsFile, fileBuffer, hSize, NULL, NULL)) {
+			DisplayErrorEx((LPSTR)"iDias:cPack:DiasPackFile", (LPSTR)"ReadFile");
+			CloseHandle(hsFile);
+
+			return FALSE;
+		}
+
 		CloseHandle(hsFile);
 
 		PAK_FILEINFO pakFileInfo;
@@ -137,7 +136,7 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 		defstream.zalloc = Z_NULL;
 		defstream.zfree = Z_NULL;
 		defstream.opaque = Z_NULL;
-		// setup "a" as the input and "b" as the compressed output
+
 		defstream.avail_in = hSize; // size of input, string + terminator
 		defstream.next_in = (Bytef *)fileBuffer; // input char array
 		defstream.avail_out = hSize; // size of output
@@ -148,54 +147,107 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 		deflate(&defstream, Z_FINISH);
 		deflateEnd(&defstream);
 
-		hsFile = CreateFile("G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\temppak.tmp", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-		DWORD a = GetFileSize(hsFile, NULL);
-		LPVOID b = malloc(a);
-		ReadFile(hsFile, b, a, NULL, NULL);
-		SetFilePointer(hsFile, a, NULL, NULL);
-		WriteFile(hsFile, fileBufferOut, defstream.total_out + 1, NULL, NULL);;
+		// temporary file
+		hsFile = CreateFile(pakFileTemp, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (hsFile == INVALID_HANDLE_VALUE) {
+			DisplayErrorEx((LPSTR)"iDias:cPack:DiasPackFile", (LPSTR)"CreateFile");
+			CloseHandle(hsFile);
+
+			free(fileBuffer);
+			free(fileBufferOut);
+
+			return FALSE;
+		}
+
+		DWORD hsSize = GetFileSize(hsFile, NULL);
+		LPVOID hsBuffer = malloc(hsSize);
+
+		if (!ReadFile(hsFile, hsBuffer, hsSize, NULL, NULL)) {
+			DisplayErrorEx((LPSTR)"iDias:cPack:DiasPackFile", (LPSTR)"ReadFile");
+			CloseHandle(hsFile);
+
+			free(hsBuffer);
+
+			return FALSE;
+		}
+
+		if (!SetFilePointer(hsFile, hsSize, NULL, NULL)) {
+			DisplayErrorEx((LPSTR)"iDias:cPack:DiasPackFile", (LPSTR)"SetFilePointer");
+			CloseHandle(hsFile);
+
+			free(hsBuffer);
+
+			return FALSE;
+		}
+
+		if (!WriteFile(hsFile, fileBufferOut, defstream.total_out + 1, NULL, NULL)) {
+			DisplayErrorEx((LPSTR)"iDias:cPack:DiasPackFile", (LPSTR)"WriteFile");
+			CloseHandle(hsFile);
+
+			free(hsBuffer);
+
+			return FALSE;
+		}
+
 		CloseHandle(hsFile);
 
+		// init pakFileInfo struct
 		pakFileInfo.RealSize = hSize;
 		pakFileInfo.RawSize = defstream.total_out;
 		pakFileInfo.CompressedSize = defstream.total_out;
 		pakFileInfo.FileDataOffset = fileOffset;
 		sprintf(pakFileInfo.FilePath, "\\File_no_%d.testing", i + 1);
 
+		// add to array
 		fInfo[i] = pakFileInfo;
 
+		// increment offset for pakHeader
 		fileOffset += (defstream.total_out + 1);
 	}
 
+	// init pakHeader
 	pakHeader.FileCount = fCount;
 	pakHeader.FileIndexTableOffset = fileOffset;
 	strcpy(pakHeader.MagicNumber, "EyedentityGames Packing File 0.1");
 	pakHeader.Unknown = 0x0B;
 
+	// writing pakHeader to file
 	WriteFile(hFile, &pakHeader, HEADER_SIZE, NULL, NULL);
 
-	HANDLE tf = CreateFile("G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\temppak.tmp", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	DWORD a = GetFileSize(tf, NULL);
-	fileTotalBuffer = malloc(a);
-	ReadFile(tf, fileTotalBuffer, a, NULL, NULL);
-	WriteFile(hFile, fileTotalBuffer, a, NULL, NULL);
-	free(fileTotalBuffer);
-	CloseHandle(tf);
-	DeleteFile("G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\temppak.tmp");
+	HANDLE tempFile = CreateFile(pakFileTemp, GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	DWORD tempSize = GetFileSize(tempFile, NULL);
+	fileTotalBuffer = malloc(tempSize);
 
+	if (!ReadFile(tempFile, fileTotalBuffer, tempSize, NULL, NULL)) {
+		DisplayErrorEx((LPSTR)"iDias:cPack:DiasPackFile", (LPSTR)"ReadFile");
+		CloseHandle(tempFile);
+
+		free(fileTotalBuffer);
+
+		return FALSE;
+	}
+
+	if (!WriteFile(hFile, fileTotalBuffer, tempSize, NULL, NULL)) {
+		DisplayErrorEx((LPSTR)"iDias:cPack:DiasPackFile", (LPSTR)"WriteFile");
+		CloseHandle(tempFile);
+
+		free(fileTotalBuffer);
+
+		return FALSE;
+	}
+
+	free(fileTotalBuffer);
+	CloseHandle(tempFile);
+
+	DeleteFile(pakFileTemp);
+
+	// write filePakInfo
 	for (INT i = 0; i < fCount; i++)
 		WriteFile(hFile, &fInfo[i], FILE_INFO_SIZE, NULL, NULL);
 
+	// end all
 	CloseHandle(hFile);
-
-	// strcpy(msg, "hmm");
-	strcpy(sMessage, msg);
 	return TRUE;
-}
-
-BOOL WINAPI DiasPackFile(LPSTR sSource, LPSTR sDestination) {
-	BOOL ret = FALSE;
-	return ret;
 }
 
 BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination) {
@@ -208,7 +260,7 @@ BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination) {
 	PPAK_HEADER pakHeader = {};
 
 	hFile = CreateFile(sSource, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (!hFile) {
+	if (hFile == INVALID_HANDLE_VALUE) {
 		DisplayErrorEx((LPSTR)"iDias:cPack:DiasUnpackFile", (LPSTR)"CreateFile");
 		return FALSE;
 	}
