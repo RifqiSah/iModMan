@@ -283,64 +283,60 @@ BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination) {
 	// -- End File Entry --
 
 	// -- Decompressing --
-	if (strlen(sDestination) == 0) {
-		if (!DirectoryExists(sDestination)) {
-			for (UINT i = 0; i < fCount; i++) {
-				LPVOID sBuffFromPak;
-				LPVOID sBuffAfterDecompress;
-				PAK_FILEINFO fInfo = fileEntries[i];
+	for (UINT i = 0; i < fCount; i++) {
+		LPVOID sBuffFromPak;
+		LPVOID sBuffAfterDecompress;
+		PAK_FILEINFO fInfo = fileEntries[i];
 
-				UINT rawSize = fInfo.RawSize;
-				UINT realSize = fInfo.RealSize;
-				LPSTR virtualPath = fInfo.FilePath;
-				DWORD filePointer = fInfo.FileDataOffset;
+		UINT rawSize = fInfo.RawSize;
+		UINT realSize = fInfo.RealSize;
+		LPSTR virtualPath = fInfo.FilePath;
+		DWORD filePointer = fInfo.FileDataOffset;
 
-				sBuffFromPak = malloc(rawSize);
-				sBuffAfterDecompress = malloc(realSize);
+		sBuffFromPak = malloc(rawSize);
+		sBuffAfterDecompress = malloc(realSize);
 
-				SetFilePointer(hFile, filePointer, NULL, NULL);
-				ReadFile(hFile, sBuffFromPak, rawSize, &bytesRead, NULL);
+		SetFilePointer(hFile, filePointer, NULL, NULL);
+		ReadFile(hFile, sBuffFromPak, rawSize, &bytesRead, NULL);
 
-				// zlib inflate start
-				z_stream infstream;
-				infstream.zalloc = Z_NULL;
-				infstream.zfree = Z_NULL;
-				infstream.opaque = Z_NULL;
+		// zlib inflate start
+		z_stream infstream;
+		infstream.zalloc = Z_NULL;
+		infstream.zfree = Z_NULL;
+		infstream.opaque = Z_NULL;
 
-				infstream.avail_in = rawSize; // size of input
-				infstream.next_in = (Bytef *)sBuffFromPak; // input char array
-				infstream.avail_out = realSize; // size of output
-				infstream.next_out = (Bytef *)sBuffAfterDecompress; // output char array
+		infstream.avail_in = rawSize; // size of input
+		infstream.next_in = (Bytef *)sBuffFromPak; // input char array
+		infstream.avail_out = realSize; // size of output
+		infstream.next_out = (Bytef *)sBuffAfterDecompress; // output char array
 
-				// the actual DE-compression work.
-				inflateInit(&infstream);
-				inflate(&infstream, Z_NO_FLUSH);
-				inflateEnd(&infstream);
+		// the actual DE-compression work.
+		inflateInit(&infstream);
+		inflate(&infstream, Z_NO_FLUSH);
+		inflateEnd(&infstream);
 
-				// Write to file
-				HANDLE hdFile;
-				CHAR sDir[MAX_PATH];
+		// Write to file
+		HANDLE hdFile;
+		CHAR sDir[MAX_PATH];
 
-				strcpy(sDir, sDestination);
-				strcat(sDir, ExtractFileName(sSource));
-				strcat(sDir, RemoveFilename(virtualPath));
-				strcat(sDir, "\\");
+		strcpy(sDir, sDestination);
+		strcat(sDir, ExtractFileName(sSource));
+		strcat(sDir, RemoveFilename(virtualPath));
+		strcat(sDir, "\\");
 
-				CreateDirectoryAndSub(sDir);
-				strcat(sDir, ExtractFileName(virtualPath));
+		CreateDirectoryAndSub(sDir);
+		strcat(sDir, ExtractFileName(virtualPath));
 
-				hdFile = CreateFile(sDir, GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-				WriteFile(hdFile, sBuffAfterDecompress, realSize, NULL, NULL);
-				CloseHandle(hdFile);
+		hdFile = CreateFile(sDir, GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		WriteFile(hdFile, sBuffAfterDecompress, realSize, NULL, NULL);
+		CloseHandle(hdFile);
 
-				free(sBuffFromPak);
-				free(sBuffAfterDecompress);
-			}
-		}
+		free(sBuffFromPak);
+		free(sBuffAfterDecompress);
 	}
 	// -- End Decompressing --
 
-	strcpy(sDestination, msg);
+	// strcpy(sDestination, msg);
 
 	VirtualFree(lBuffer, hSize, MEM_RELEASE);
 	CloseHandle(hFile);
