@@ -1,6 +1,24 @@
 #include "iDias.h"
 
 #define MSGLEN			1024 * 1000
+#define HEADER_SIZE		1024
+#define METADATA_SIZE	192
+
+typedef struct _PAK_HEADER {
+	CHAR MagicNumber[8];
+	UINT8 Unknown[128];
+	DWORD MetadataOffset;
+	// INT Unknown;
+	// UINT FileIndexTableOffset;
+	// UINT8 Padding[756];
+} PAK_HEADER, *PPAK_HEADER;
+
+typedef struct _PAK_METADATA {
+	CHAR FileName[32];
+	CHAR ErisName[64];
+	CHAR Version[32];
+	CHAR Other[64];
+} PAK_METADATA, *PPAK_METADATA;
 
 BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	HANDLE hFile;
@@ -8,6 +26,9 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	LPVOID lBuffer;
 	DWORD bytesRead;
 	DWORD oldProtection;
+
+	PPAK_HEADER pakHeader = {};
+	PPAK_METADATA pakMetadata = {};
 
 	hFile = CreateFile(sSource, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) {
@@ -51,39 +72,36 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	INT msg_len = 0;
 
 	// -- Header --
-	/*
 	pakHeader = (PPAK_HEADER)lBuffer;
 
-	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nHEADER\r\n-----\r\nMagic: %s\r\nNumber of Files: %d\r\nFile Index Offset: 0x%08X\r\n\r\n",
+	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nHEADER\r\n-----\r\nMagic: %s\r\nMeta Data Offset: 0x%08X\r\n\r\n",
 		pakHeader->MagicNumber,
-		pakHeader->FileCount,
-		pakHeader->FileIndexTableOffset);
-		*/
+		pakHeader->MetadataOffset);
 	// -- End Header --
 
-	// -- FileEntry --
-	/*
-	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nFILES\r\n-----\r\n");
-
-	if (!SetFilePointer(hFile, pakHeader->FileIndexTableOffset, NULL, NULL)) {
-		DisplayErrorEx((LPSTR)"iDias:cPack:ReadPak", (LPSTR)"SetFilePointer");
+	// -- Metadata --
+	if (!SetFilePointer(hFile, pakHeader->MetadataOffset, NULL, NULL)) {
+		DisplayErrorEx((LPSTR)"iDias:cPack:ReadEris", (LPSTR)"SetFilePointer");
 		VirtualFree(lBuffer, hSize, MEM_RELEASE);
 		CloseHandle(hFile);
 
 		return FALSE;
 	}
 
-	UINT fCount = pakHeader->FileCount;
-	for (UINT i = 0; i < fCount; i++) {
-		PPAK_FILEINFO pakFileInfo = {};
+	if (!ReadFile(hFile, lBuffer, METADATA_SIZE, &bytesRead, NULL)) {
+		DisplayErrorEx((LPSTR)"iDias:cPack:ReadEris", (LPSTR)"ReadFile");
+		VirtualFree(lBuffer, hSize, MEM_RELEASE);
+		CloseHandle(hFile);
 
-		ReadFile(hFile, lBuffer, FILE_INFO_SIZE, &bytesRead, NULL);
-		pakFileInfo = (PPAK_FILEINFO)lBuffer;
-
-		msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "[%03d] [0x%08X] [Disk: %04d bytes] [Raw: %04d bytes] %s\r\n", i + 1, pakFileInfo->FileDataOffset, pakFileInfo->RealSize, pakFileInfo->RawSize, pakFileInfo->FilePath);
+		return FALSE;
 	}
-	*/
-	// -- End File Entry --
+
+	pakMetadata = (PPAK_METADATA)lBuffer;
+	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nMETADATA\r\n-----\r\nEris Name: %s\r\nVersion: %s\r\nFilename: %s\r\n\r\n",
+		pakMetadata->ErisName,
+		pakMetadata->Version,
+		pakMetadata->FileName);
+	// -- End Metadata --
 
 	strcpy(sMessage, msg);
 
