@@ -1,8 +1,5 @@
 #include "iDias.h"
 
-#include "zlib/zlib.h"
-#pragma comment(lib, "..\\lib\\zlibwapi.lib")
-
 #define MSGLEN			1024 * 1000
 #define HEADER_SIZE		1024
 #define FILE_INFO_SIZE	316
@@ -27,7 +24,7 @@ typedef struct _PAK_FILEINFO {
 
 CHAR pakFileTemp[] = "G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\temppak.tmp";
 
-VOID dirListFiles(LPSTR startDir)
+VOID dirListFiles(const CHAR *startDir)
 {
 	HANDLE hFind;
 	WIN32_FIND_DATA wfd;
@@ -37,49 +34,30 @@ VOID dirListFiles(LPSTR startDir)
 
 	fprintf(stdout, "In Directory \"%s\"\n\n", startDir);
 
-	if ((hFind = FindFirstFile(path, &wfd)) == INVALID_HANDLE_VALUE)
-	{
-		fprintf(stderr, "FindFirstFIle failed on path = \"%s\"\n", path);
-		abort();
+	if ((hFind = FindFirstFile(path, &wfd)) == INVALID_HANDLE_VALUE) {
+		DisplayErrorEx((LPSTR)"iDias:cPack:dirListFiles", (LPSTR)"FindFirstFile");
+		return;
 	}
 
 	BOOL cont = TRUE;
 	while (cont == TRUE)
 	{
-		if ((strncmp(".", wfd.cFileName, 1) != 0) && (strncmp("..", wfd.cFileName, 2) != 0))
-		{
-			if (wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			{
+		if ((strncmp(".", wfd.cFileName, 1) != 0) && (strncmp("..", wfd.cFileName, 2) != 0)) {
+			if (wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 				sprintf(path, "%s\\%s", startDir, wfd.cFileName);
-				
 				dirListFiles(path);
 			}
-			else
-			{
-				//do your work here -- mildly klugy comparison
+			else {
 				CHAR wkwk[MAX_PATH];
 				sprintf(wkwk, "%s\\%s", substr(path, 0, strlen(path) - 1), wfd.cFileName);
 				OutputDebugString(wkwk);
-
-				int len = strlen(wfd.cFileName);
-				if (len > 4)
-					if (strncmp(".cpp", wfd.cFileName + len - 4, 4) == 0)
-						fprintf(stdout, "match = \"%s\"\n", wfd.cFileName);
-
 			}
 		}
+
 		cont = FindNextFile(hFind, &wfd);
 	}
-	if (GetLastError() != ERROR_NO_MORE_FILES)
-	{
-		fprintf(stderr, "FindNextFile died for some reason; path = \"%s\"\n", path);
-		abort();
-	}
-	if (FindClose(hFind) == FALSE)
-	{
-		fprintf(stderr, "FindClose failed\n");
-		abort();
-	}
+
+	FindClose(hFind);
 }
 
 BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {

@@ -34,6 +34,9 @@
     <ClCompile Include="cPack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cEris.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.def" />

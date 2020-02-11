@@ -1,5 +1,7 @@
 LIBRARY iDias
 EXPORTS
+	ReadEris
+
 	ReadPak
 	DiasPackFile
 	DiasUnpackFile

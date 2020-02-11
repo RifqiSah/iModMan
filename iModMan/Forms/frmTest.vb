@@ -1,8 +1,17 @@
 ﻿Imports System.Reflection
 
 Public Class frmTest
+    Private Sub frmTest_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Application.EnableVisualStyles()
+
+        LoadWin32Library(Application.StartupPath & "\iModMan\zlibwapi.dll")
+        LoadWin32Library(Application.StartupPath & "\iModMan\iNative.dll")
+        LoadWin32Library(Application.StartupPath & "\iModMan\iCrypto.dll")
+        LoadWin32Library(Application.StartupPath & "\iModMan\iDias.dll")
+    End Sub
+
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim str As String = Space(1024 * 1024)
+        Dim str As String = Space(1024 * 1000)
         Dim ret As Boolean = ReadPak(TextBox1.Text, str)
 
         If (ret = False) Then
@@ -13,16 +22,17 @@ Public Class frmTest
         TextBox2.Text = str
     End Sub
 
-    Private Sub frmTest_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        LoadWin32Library(Application.StartupPath & "\iModMan\zlibwapi.dll")
-        LoadWin32Library(Application.StartupPath & "\iModMan\iNative.dll")
-        LoadWin32Library(Application.StartupPath & "\iModMan\iCrypto.dll")
-        LoadWin32Library(Application.StartupPath & "\iModMan\iDias.dll")
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Dim str As String = Space(1024 * 1024)
-        Dim ret As Boolean = DiasUnpackFile("G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\test.pak", str)
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Dim str As String = Space(1024 * 1000)
+        Dim ret As Boolean = ReadPak("H:\\Tools\\DN Tools\\DN PAK Mentah\\00Resource_dvmk_dv-battle-training-ground-ex-1.1.0.eris.pak", str)
 
         If (ret = False) Then
             MsgBox("Ada Error!")
@@ -30,9 +40,5 @@ Public Class frmTest
         End If
 
         TextBox2.Text = str
-    End Sub
-
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        DiasUnpackFile("G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\test.pak", "G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\")
     End Sub
 End Class

@@ -13,6 +13,7 @@ Module mdlAPI
     Public Declare Function GetMD5FileHash Lib "iCrypto.dll" (ByVal sFilePath As String, ByVal Hash As String) As Boolean
     Public Declare Function GetSHA256FileHash Lib "iCrypto.dll" (ByVal sFilePath As String, ByVal Hash As String) As Boolean
 
+    Public Declare Function ReadEris Lib "iDias.dll" (ByVal sSource As String, ByVal sMessage As String) As Boolean
     Public Declare Function ReadPak Lib "iDias.dll" (ByVal sSource As String, ByVal sMessage As String) As Boolean
     Public Declare Function DiasPackFile Lib "iDias.dll" (ByVal sSource As String, ByVal sDestination As String) As Boolean
     Public Declare Function DiasUnpackFile Lib "iDias.dll" (ByVal sSource As String, ByVal sDestination As String) As Boolean
