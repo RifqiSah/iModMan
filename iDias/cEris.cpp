@@ -97,10 +97,11 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	}
 
 	pakMetadata = (PPAK_METADATA)lBuffer;
-	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nMETADATA\r\n-----\r\nEris Name: %s\r\nVersion: %s\r\nFilename: %s\r\n\r\n",
+	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nMETADATA\r\n-----\r\nEris Name: %s\r\nVersion: %s\r\nFilename: %s\r\nOther: %s\r\n\r\n",
 		pakMetadata->ErisName,
 		pakMetadata->Version,
-		pakMetadata->FileName);
+		pakMetadata->FileName,
+		pakMetadata->Other);
 	// -- End Metadata --
 
 	strcpy(sMessage, msg);
