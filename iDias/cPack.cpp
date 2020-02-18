@@ -424,6 +424,7 @@ BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination) {
 		CHAR sDir[MAX_PATH];
 
 		strcpy(sDir, sDestination);
+		strcat(sDir, "\\");
 		strcat(sDir, ExtractFileName(sSource));
 		strcat(sDir, RemoveFilename(virtualPath));
 		strcat(sDir, "\\");
