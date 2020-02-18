@@ -63,7 +63,9 @@ LPSTR WINAPI ExtractFileName(LPSTR fullPath)
 
 	strcpy(path, fullPath);
 	strcpy(path, PathFindFileName(fullPath));
-	PathRemoveExtension(path);
+
+	if (strcmp(PathFindExtension(path), ".pak") == 0 || strcmp(PathFindExtension(path), ".PAK") == 0)
+		PathRemoveExtension(path);
 
 	return path;
 }
