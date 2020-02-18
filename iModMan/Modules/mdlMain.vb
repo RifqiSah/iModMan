@@ -1,5 +1,5 @@
 ﻿Module mdlMain
-    Public Sub mainadadad()
+    Public Sub Main()
         ' Load dulu DLL nya
         LoadNativeDlls()
 
@@ -22,24 +22,29 @@
             Exit Sub
         End If
 
-        ' Cek update programnya
-        doUpdateProg(frmMain)
+        ' Untuk commandline
+        Dim Cmd() As String = Environment.GetCommandLineArgs
+        If UBound(Cmd) > 0 Then ' Ada ?
+            Select Case Cmd(1).ToUpper
+                Case "/TOOLS"
+                    frmTest.Show()
+                    Application.Run()
 
-        ' Run program
-        Application.Run()
-    End Sub
+                Case Else
+                    MsgBox("Command line tidak ditemukan!", MsgBoxStyle.Critical, "Error")
 
-    Public Sub main()
-        LoadNativeDlls()
-
-        Dim ret As Boolean = DiasPackFile("G:\PakSource2\Source\CompileMe", "G:\PakSource2\Source\00Resource_rifqisah_gatauapa_1.0.0.dias.pak")
-        MsgBox(ret)
-
-        ret = DiasUnpackFile("G:\PakSource2\Source\00Resource_rifqisah_gatauapa_1.0.0.dias.pak", "G:\PakSource2\Source\testaja")
-        MsgBox(ret)
+            End Select
+        Else ' Kosong ?
+            doUpdateProg(frmMain)
+            Application.Run()
+        End If
     End Sub
 
     Private Sub LoadNativeDlls()
+        ' Extrnal DLL
+        LoadWin32Library(Application.StartupPath & "\iModMan\zlibwapi.dll")
+
+        ' Internal DLL
         LoadWin32Library(Application.StartupPath & "\iModMan\iNative.dll")
         LoadWin32Library(Application.StartupPath & "\iModMan\iCrypto.dll")
         LoadWin32Library(Application.StartupPath & "\iModMan\iDias.dll")

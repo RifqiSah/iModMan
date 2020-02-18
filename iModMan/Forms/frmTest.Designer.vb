@@ -45,7 +45,6 @@ Partial Class frmTest
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(537, 21)
         Me.TextBox1.TabIndex = 1
-        Me.TextBox1.Text = "H:\Tools\DN Tools\DN PAK Mentah\00resource_b-Purple-MBDEX.pak"
         '
         'TextBox2
         '
