@@ -59,7 +59,13 @@ VOID WINAPI strlcase(LPSTR s)
 
 LPSTR WINAPI ExtractFileName(LPSTR fullPath)
 {
-	return PathFindFileName(fullPath);
+	CHAR path[MAX_PATH];
+
+	strcpy(path, fullPath);
+	strcpy(path, PathFindFileName(fullPath));
+	PathRemoveExtension(path);
+
+	return path;
 }
 
 VOID WINAPI CreateDirectoryAndSub(LPSTR path) {

@@ -6,6 +6,7 @@
 #include <time.h>
 #include <Shlwapi.h>
 #include <wininet.h>
+#include <PathCch.h>
 
 #pragma warning(disable: 4305)
 #pragma warning(disable: 4309)
