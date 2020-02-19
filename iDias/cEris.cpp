@@ -2,7 +2,7 @@
 
 #define MSGLEN			1024 * 1000
 #define HEADER_SIZE		1024
-#define METADATA_SIZE	192
+#define METADATA_SIZE	192 + 260
 
 typedef struct _PAK_HEADER {
 	CHAR MagicNumber[8];
@@ -14,11 +14,39 @@ typedef struct _PAK_HEADER {
 } PAK_HEADER, *PPAK_HEADER;
 
 typedef struct _PAK_METADATA {
-	CHAR FileName[32];
-	CHAR ErisName[64];
-	CHAR Version[32];
-	CHAR Other[64];
+	CHAR id[32];
+	CHAR name[64];
+	CHAR version[32];
+	CHAR projectUrl[64];
+	CHAR test[260];
 } PAK_METADATA, *PPAK_METADATA;
+
+VOID test(Bytef *sBuff, UINT rawSize) {
+	UINT realSize = rawSize * 10;
+	Bytef *sResult = (Bytef *)malloc(realSize);
+
+	// zlib inflate start
+	z_stream infstream;
+	infstream.zalloc = Z_NULL;
+	infstream.zfree = Z_NULL;
+	infstream.opaque = Z_NULL;
+
+	infstream.avail_in = rawSize; // size of input
+	infstream.next_in = sBuff; // input char array
+	infstream.avail_out = realSize; // size of output
+	infstream.next_out = sResult; // output char array
+
+	// the actual DE-compression work.
+	inflateInit(&infstream);
+	inflate(&infstream, Z_NO_FLUSH);
+	inflateEnd(&infstream);
+
+	CHAR msg[MSGLEN];
+	sprintf(msg, "%s", sResult);
+	MessageBox(GetActiveWindow(), msg, "Test", MB_OK | MB_ICONINFORMATION);
+
+	free(sResult);
+}
 
 BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	HANDLE hFile;
@@ -29,6 +57,11 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 
 	PPAK_HEADER pakHeader = {};
 	PPAK_METADATA pakMetadata = {};
+
+	if (!strstr(sSource, ".eris.pak")) {
+		MessageBox(GetActiveWindow(), "File yang Anda berikan bukan merupakan mod ERIS!", "Error", MB_OK | MB_ICONERROR);
+		return FALSE;
+	}
 
 	hFile = CreateFile(sSource, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) {
@@ -97,11 +130,13 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	}
 
 	pakMetadata = (PPAK_METADATA)lBuffer;
-	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nMETADATA\r\n-----\r\nEris Name: %s\r\nVersion: %s\r\nFilename: %s\r\nOther: %s\r\n\r\n",
-		pakMetadata->ErisName,
-		pakMetadata->Version,
-		pakMetadata->FileName,
-		pakMetadata->Other);
+	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nMETADATA\r\n-----\r\nID: %s\r\nName: %s\r\nVersion: %s\r\nProject URL: %s\r\n\r\n",
+		pakMetadata->id,
+		pakMetadata->name,
+		pakMetadata->version,
+		pakMetadata->projectUrl);
+
+	// test((Bytef *)pakMetadata->test, 260);
 	// -- End Metadata --
 
 	strcpy(sMessage, msg);
