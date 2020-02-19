@@ -2,7 +2,7 @@
 
 Module mdlSettings
 
-    Private IniFile As String = Application.StartupPath & "\settings.ini"
+    Private IniFile As String = Application.StartupPath & "\iModMan\settings.ini"
 
     Public Function ReadIniValue(lpBlock As String, lpKey As String) As String
         Dim Ret As Integer

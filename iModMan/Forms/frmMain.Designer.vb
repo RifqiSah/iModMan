@@ -45,7 +45,7 @@ Partial Class frmMain
         Me.lstMod.HideSelection = False
         Me.lstMod.Location = New System.Drawing.Point(13, 12)
         Me.lstMod.Name = "lstMod"
-        Me.lstMod.Size = New System.Drawing.Size(646, 198)
+        Me.lstMod.Size = New System.Drawing.Size(646, 218)
         Me.lstMod.TabIndex = 0
         Me.lstMod.UseCompatibleStateImageBehavior = False
         Me.lstMod.View = System.Windows.Forms.View.Details
@@ -78,7 +78,7 @@ Partial Class frmMain
         'chkListMod
         '
         Me.chkListMod.AutoSize = True
-        Me.chkListMod.Location = New System.Drawing.Point(13, 222)
+        Me.chkListMod.Location = New System.Drawing.Point(13, 243)
         Me.chkListMod.Name = "chkListMod"
         Me.chkListMod.Size = New System.Drawing.Size(105, 17)
         Me.chkListMod.TabIndex = 1
@@ -87,7 +87,7 @@ Partial Class frmMain
         '
         'btnProcess
         '
-        Me.btnProcess.Location = New System.Drawing.Point(543, 244)
+        Me.btnProcess.Location = New System.Drawing.Point(543, 265)
         Me.btnProcess.Name = "btnProcess"
         Me.btnProcess.Size = New System.Drawing.Size(116, 37)
         Me.btnProcess.TabIndex = 2
@@ -96,7 +96,7 @@ Partial Class frmMain
         '
         'lblNumberUpdates
         '
-        Me.lblNumberUpdates.Location = New System.Drawing.Point(413, 222)
+        Me.lblNumberUpdates.Location = New System.Drawing.Point(413, 243)
         Me.lblNumberUpdates.Name = "lblNumberUpdates"
         Me.lblNumberUpdates.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.lblNumberUpdates.Size = New System.Drawing.Size(246, 13)
@@ -107,7 +107,7 @@ Partial Class frmMain
         'chkEnlarge
         '
         Me.chkEnlarge.AutoSize = True
-        Me.chkEnlarge.Location = New System.Drawing.Point(13, 244)
+        Me.chkEnlarge.Location = New System.Drawing.Point(13, 265)
         Me.chkEnlarge.Name = "chkEnlarge"
         Me.chkEnlarge.Size = New System.Drawing.Size(175, 17)
         Me.chkEnlarge.TabIndex = 4
@@ -126,7 +126,7 @@ Partial Class frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(671, 293)
+        Me.ClientSize = New System.Drawing.Size(671, 314)
         Me.Controls.Add(Me.linkLblUpd)
         Me.Controls.Add(Me.chkEnlarge)
         Me.Controls.Add(Me.lblNumberUpdates)
