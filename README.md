@@ -21,6 +21,7 @@ Mod yang akan digunakan pada iModMan adalah mod yang bersifat private, hanya ang
   - [X] Auto detect Athena executable.
   - [ ] Eris mod integration (if i can contact Vahr).
 - [ ] Integrate with DNModder.
+  - [V] Autodetect DNModder modules.
   - [ ] Make DNModder mod.
   - [ ] Install & uninstall DNModder.
 - [ ] Additional feature.
