@@ -1,6 +1,7 @@
 ﻿Module mdlMain
     Public Sub Main()
         ' Load dulu DLL nya
+        AppDomain.CurrentDomain.AppendPrivatePath("iModMan")
         LoadNativeDlls()
 
         ' Init style
