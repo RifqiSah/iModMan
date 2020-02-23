@@ -62,6 +62,7 @@ Module mdlFunct
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
             request = DirectCast(WebRequest.Create(sURL), HttpWebRequest)
+            request.UserAgent = "request"
             response = DirectCast(request.GetResponse(), HttpWebResponse)
             reader = New StreamReader(response.GetResponseStream())
         Catch ex As Exception
