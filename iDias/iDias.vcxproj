@@ -93,6 +93,7 @@
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cDias.cpp" />
     <ClCompile Include="cEris.cpp" />
     <ClCompile Include="cMain.cpp" />
     <ClCompile Include="cPack.cpp" />

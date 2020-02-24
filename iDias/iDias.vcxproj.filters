@@ -37,6 +37,9 @@
     <ClCompile Include="cEris.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cDias.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.def" />
