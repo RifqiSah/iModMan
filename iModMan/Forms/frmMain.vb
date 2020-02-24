@@ -74,4 +74,13 @@ Public Class frmMain
     Private Sub frmMain_Closed(sender As Object, e As EventArgs) Handles Me.Closed
         Application.Exit()
     End Sub
+
+    Private Sub showChangeLogFrm()
+        frmChangeLog.ShowDialog(Me)
+    End Sub
+
+    Private Sub lblCommit_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblCommit.LinkClicked
+        Dim th As Threading.Thread = New Threading.Thread(AddressOf showChangeLogFrm)
+        th.Start()
+    End Sub
 End Class

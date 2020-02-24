@@ -113,6 +113,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\clsFFile.vb" />
+    <Compile Include="Forms\frmChangeLog.Designer.vb">
+      <DependentUpon>frmChangeLog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmChangeLog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmTest.Designer.vb">
       <DependentUpon>frmTest.vb</DependentUpon>
     </Compile>
@@ -168,6 +174,9 @@
     <Compile Include="Others\Settings.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\frmChangeLog.resx">
+      <DependentUpon>frmChangeLog.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
     </EmbeddedResource>

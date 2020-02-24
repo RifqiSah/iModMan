@@ -33,6 +33,7 @@ Partial Class frmMain
         Me.lblNumberUpdates = New System.Windows.Forms.Label()
         Me.chkEnlarge = New System.Windows.Forms.CheckBox()
         Me.linkLblUpd = New System.Windows.Forms.LinkLabel()
+        Me.lblCommit = New System.Windows.Forms.LinkLabel()
         Me.SuspendLayout()
         '
         'lstMod
@@ -122,11 +123,22 @@ Partial Class frmMain
         Me.linkLblUpd.Size = New System.Drawing.Size(0, 13)
         Me.linkLblUpd.TabIndex = 6
         '
+        'lblCommit
+        '
+        Me.lblCommit.AutoSize = True
+        Me.lblCommit.Location = New System.Drawing.Point(12, 303)
+        Me.lblCommit.Name = "lblCommit"
+        Me.lblCommit.Size = New System.Drawing.Size(64, 13)
+        Me.lblCommit.TabIndex = 7
+        Me.lblCommit.TabStop = True
+        Me.lblCommit.Text = "Change Log"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(671, 314)
+        Me.ClientSize = New System.Drawing.Size(671, 325)
+        Me.Controls.Add(Me.lblCommit)
         Me.Controls.Add(Me.linkLblUpd)
         Me.Controls.Add(Me.chkEnlarge)
         Me.Controls.Add(Me.lblNumberUpdates)
@@ -157,4 +169,5 @@ Partial Class frmMain
     Friend WithEvents lblNumberUpdates As Label
     Friend WithEvents chkEnlarge As CheckBox
     Friend WithEvents linkLblUpd As LinkLabel
+    Friend WithEvents lblCommit As LinkLabel
 End Class
