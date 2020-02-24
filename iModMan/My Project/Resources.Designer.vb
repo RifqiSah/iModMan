@@ -61,24 +61,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to http://localhost/iModMan.json.
-        '''</summary>
-        Friend ReadOnly Property base() As String
-            Get
-                Return ResourceManager.GetString("base", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to https://www.alriftech.com/dn/mods.
-        '''</summary>
-        Friend ReadOnly Property base_mod() As String
-            Get
-                Return ResourceManager.GetString("base_mod", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         '''</summary>
         Friend ReadOnly Property Icon() As System.Drawing.Icon
@@ -91,9 +73,27 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to patchlist.json.
         '''</summary>
-        Friend ReadOnly Property patchlist() As String
+        Friend ReadOnly Property mod_patchlist() As String
             Get
-                Return ResourceManager.GetString("patchlist", resourceCulture)
+                Return ResourceManager.GetString("mod_patchlist", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to https://www.alriftech.com/dn/mods.
+        '''</summary>
+        Friend ReadOnly Property mod_url() As String
+            Get
+                Return ResourceManager.GetString("mod_url", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to https://api.github.com/repos/rifqisah/imodman/commits.
+        '''</summary>
+        Friend ReadOnly Property repo_url() As String
+            Get
+                Return ResourceManager.GetString("repo_url", resourceCulture)
             End Get
         End Property
     End Module

@@ -117,19 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="base" xml:space="preserve">
-    <value>http://localhost/iModMan.json</value>
-    <comment>Base URL for update and downloading mods.</comment>
+  <data name="repo_url" xml:space="preserve">
+    <value>https://api.github.com/repos/rifqisah/imodman/commits</value>
+    <comment>Repo URL for iModMan.</comment>
   </data>
-  <data name="base_mod" xml:space="preserve">
+  <data name="mod_url" xml:space="preserve">
     <value>https://www.alriftech.com/dn/mods</value>
-    <comment>Base URL for mod file collection</comment>
+    <comment>Base URL for mod file collection.</comment>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="patchlist" xml:space="preserve">
+  <data name="mod_patchlist" xml:space="preserve">
     <value>patchlist.json</value>
     <comment>JSON file for program and mod updates.</comment>
   </data>
