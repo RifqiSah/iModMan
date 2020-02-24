@@ -11,9 +11,15 @@ using namespace std;
 #include "zlib/zlib.h"
 #pragma comment(lib, "..\\lib\\zlibwapi.lib")
 
+// Eris
 BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage);
-BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage);
-BOOL WINAPI DiasPackFile(LPSTR sSource, LPSTR sDestination);
-BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination);
-BOOL WINAPI DiasPackBuffer(LPVOID sBuffer, LPSTR sDestination);
-BOOL WINAPI DiasUnpackBuffer(LPVOID sBuffer, LPSTR sDestination);
+
+// DN
+BOOL WINAPI DnPakRead(LPSTR sSource, LPSTR sMessage);
+BOOL WINAPI DnPakPack(LPSTR sSource, LPSTR sDestination);
+BOOL WINAPI DnPakUnpack(LPSTR sSource, LPSTR sDestination);
+
+// Dias
+BOOL WINAPI DiasPakRead(LPSTR sSource, LPSTR sMessage);
+BOOL WINAPI DiasPakPack(LPSTR sSource, LPSTR sDestination);
+BOOL WINAPI DiasPakUnpack(LPSTR sSource, LPSTR sDestination);

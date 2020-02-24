@@ -2,8 +2,10 @@ LIBRARY iDias
 EXPORTS
 	ReadEris
 
-	ReadPak
-	DiasPackFile
-	DiasUnpackFile
-	DiasPackBuffer
-	DiasUnpackBuffer
+	DnPakRead
+	DnPakPack
+	DnPakUnpack
+
+	DiasPakRead
+	DiasPakPack
+	DiasPakUnpack

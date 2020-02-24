@@ -60,7 +60,7 @@ VOID dirListFiles(const CHAR *startDir)
 	FindClose(hFind);
 }
 
-BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
+BOOL WINAPI DnPakRead(LPSTR sSource, LPSTR sMessage) {
 	HANDLE hFile;
 	DWORD hSize;
 	LPVOID lBuffer;
@@ -149,7 +149,7 @@ BOOL WINAPI ReadPak(LPSTR sSource, LPSTR sMessage) {
 	return TRUE;
 }
 
-BOOL WINAPI DiasPackFile(LPSTR sSource, LPSTR sDestination) {
+BOOL WINAPI DnPakPack(LPSTR sSource, LPSTR sDestination) {
 	CHAR sFile[MAX_PATH];
 	HANDLE hFile;
 	PAK_HEADER pakHeader;
@@ -313,7 +313,7 @@ BOOL WINAPI DiasPackFile(LPSTR sSource, LPSTR sDestination) {
 	return TRUE;
 }
 
-BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination) {
+BOOL WINAPI DnPakUnpack(LPSTR sSource, LPSTR sDestination) {
 	HANDLE hFile;
 	DWORD hSize;
 	LPVOID lBuffer;
@@ -444,12 +444,4 @@ BOOL WINAPI DiasUnpackFile(LPSTR sSource, LPSTR sDestination) {
 	VirtualFree(lBuffer, hSize, MEM_RELEASE);
 	CloseHandle(hFile);
 	return TRUE;
-}
-
-BOOL WINAPI DiasPackBuffer(LPVOID sBuffer, LPSTR sDestination) {
-	return FALSE;
-}
-
-BOOL WINAPI DiasUnpackBuffer(LPVOID sBuffer, LPSTR sDestination) {
-	return FALSE;
 }
