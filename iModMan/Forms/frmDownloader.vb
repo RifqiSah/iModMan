@@ -6,9 +6,14 @@ Public Class frmDownloader
     Public fileDownloadList As New List(Of clsFFile)()
     Dim i As Integer = -1
     Dim frm As Form
+    Dim other As Boolean = False
 
     Public Sub setForm(sFrm As Form)
         frm = sFrm
+    End Sub
+
+    Public Sub setOther(sO As Boolean)
+        other = sO
     End Sub
 
     Private Sub frmDownloader_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -27,16 +32,25 @@ Public Class frmDownloader
             AddHandler client.DownloadFileCompleted, AddressOf OnDownloadComplete
 
             Dim f As clsFFile = fileDownloadList.Item(0)
+            Dim fPath As String = ""
 
             lblFileInfo.Text = f.getFileName()
             client.QueryString.Add("file_name", f.getFileName())
-            client.QueryString.Add("file_path", Application.StartupPath & "/" & f.getPath())
-            client.QueryString.Add("file_hash", f.getHash())
-            client.DownloadFileAsync(New Uri(f.getUrl()), Application.StartupPath & "/" & f.getPath())
+
+            If (other) Then
+                fPath = f.getPath()
+            Else
+                fPath = Application.StartupPath & "/" & f.getPath()
+
+                client.QueryString.Add("file_path", fPath)
+                client.QueryString.Add("file_hash", f.getHash())
+            End If
+
+            client.DownloadFileAsync(New Uri(f.getUrl()), fPath)
 
             fileDownloadList.RemoveAt(0)
-        Else
-            If (Not IsNothing(frm)) Then frm.Show()
+            Else
+                If (Not IsNothing(frm)) Then frm.Show()
             Close()
         End If
     End Sub
@@ -47,25 +61,27 @@ Public Class frmDownloader
         Dim fileHash As String = (CType((sender), WebClient)).QueryString("file_hash")
 
         If Not e.Cancelled AndAlso e.Error Is Nothing Then
-            Dim sHash As String = SHA256CheckSum(filePath).Trim(Chr(0))
+            If (Not other) Then
+                Dim sHash As String = SHA256CheckSum(filePath).Trim(Chr(0))
 
-            If (Not sHash.Equals(fileHash)) Then
-                MessageBox.Show("Pengunduhan gagal!" & vbCrLf & "File '" & fileName & "' rusak! Silahkan lakukan pengunduhan ulang.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                File.Delete(filePath)
+                If (Not sHash.Equals(fileHash)) Then
+                    MessageBox.Show("Pengunduhan gagal!" & vbCrLf & "File '" & fileName & "' rusak! Silahkan lakukan pengunduhan ulang.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    File.Delete(filePath)
 
-                GoTo Lewat
+                    GoTo Lewat
+                End If
+
+                If (Path.GetExtension(filePath) = ".pak") Then ' Hanya .pak saja yang diperbesar
+                    If (Integer.Parse(ReadIniValue("Application", "PakEnlarge")) And Not isAthenaExists()) Then pakExpand(filePath)
+
+                    ' Ambil file yang terbaru saja
+                    keepLatestFile(fileName)
+                End If
+
+                ' MessageBox.Show("Pengunduhan sukses!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
-
-            If (Path.GetExtension(filePath) = ".pak") Then ' Hanya .pak saja yang diperbesar
-                If (Integer.Parse(ReadIniValue("Application", "PakEnlarge")) And Not isAthenaExists()) Then pakExpand(filePath)
-
-                ' Ambil file yang terbaru saja
-                keepLatestFile(fileName)
-            End If
-
-            ' MessageBox.Show("Pengunduhan sukses!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
-            MessageBox.Show("Pengunduhan gagal!" & vbCrLf & e.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Pengunduhan gagal!" & vbCrLf & e.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             File.Delete(filePath)
             Application.Exit()
         End If

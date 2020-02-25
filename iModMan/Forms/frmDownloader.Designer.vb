@@ -47,16 +47,16 @@ Partial Class frmDownloader
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(344, 57)
+        Me.ControlBox = False
         Me.Controls.Add(Me.progFile)
         Me.Controls.Add(Me.lblFileInfo)
         Me.Font = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmDownloader"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Downloader"
         Me.TopMost = True
         Me.ResumeLayout(False)
 
