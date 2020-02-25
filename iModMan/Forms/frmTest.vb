@@ -72,6 +72,8 @@ Public Class frmTest
     End Sub
 
     Private Sub loadPartialPaks()
+        cmbPartialPak.Items.Clear()
+
         Dim dir As DirectoryInfo = New DirectoryInfo("H:\Dragon Nest\DN Partial Paks")
         Dim files As FileInfo() = dir.GetFiles().OrderBy(Function(p) p.Name).ToArray()
 
@@ -80,6 +82,10 @@ Public Class frmTest
         Next
 
         cmbPartialPak.SelectedIndex = 0
+
+        Dim lastPak As Integer = Integer.Parse(cmbPartialPak.Items(cmbPartialPak.Items.Count - 1).ToString().Replace("Patch", "").Replace(".pak", ""))
+        txtPartialFrom.Text = lastPak
+        txtPartialTo.Text = lastPak
     End Sub
 
     Private Sub btnPartialDownload_Click(sender As Object, e As EventArgs) Handles btnPartialDownload.Click
@@ -100,5 +106,9 @@ Public Class frmTest
 
     Private Sub cmbPartialPak_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPartialPak.SelectedIndexChanged
         TextBox1.Text = "H:\Dragon Nest\DN Partial Paks\" & cmbPartialPak.SelectedItem.ToString()
+    End Sub
+
+    Private Sub btnLoadPartial_Click(sender As Object, e As EventArgs) Handles btnLoadPartial.Click
+        loadPartialPaks()
     End Sub
 End Class

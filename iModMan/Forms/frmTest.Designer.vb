@@ -36,6 +36,7 @@ Partial Class frmTest
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtPartialFrom = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.btnLoadPartial = New System.Windows.Forms.Button()
         Me.cmbPartialPak = New System.Windows.Forms.ComboBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -164,6 +165,7 @@ Partial Class frmTest
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.btnLoadPartial)
         Me.GroupBox2.Controls.Add(Me.cmbPartialPak)
         Me.GroupBox2.Location = New System.Drawing.Point(557, 107)
         Me.GroupBox2.Name = "GroupBox2"
@@ -172,12 +174,23 @@ Partial Class frmTest
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Unpacker"
         '
+        'btnLoadPartial
+        '
+        Me.btnLoadPartial.Location = New System.Drawing.Point(145, 18)
+        Me.btnLoadPartial.Name = "btnLoadPartial"
+        Me.btnLoadPartial.Size = New System.Drawing.Size(23, 23)
+        Me.btnLoadPartial.TabIndex = 10
+        Me.btnLoadPartial.Text = "~"
+        Me.btnLoadPartial.UseVisualStyleBackColor = True
+        '
         'cmbPartialPak
         '
         Me.cmbPartialPak.FormattingEnabled = True
+        Me.cmbPartialPak.ItemHeight = 13
         Me.cmbPartialPak.Location = New System.Drawing.Point(8, 20)
+        Me.cmbPartialPak.MaxDropDownItems = 5
         Me.cmbPartialPak.Name = "cmbPartialPak"
-        Me.cmbPartialPak.Size = New System.Drawing.Size(160, 21)
+        Me.cmbPartialPak.Size = New System.Drawing.Size(131, 21)
         Me.cmbPartialPak.Sorted = True
         Me.cmbPartialPak.TabIndex = 0
         '
@@ -225,4 +238,5 @@ Partial Class frmTest
     Friend WithEvents txtPartialFrom As TextBox
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents cmbPartialPak As ComboBox
+    Friend WithEvents btnLoadPartial As Button
 End Class

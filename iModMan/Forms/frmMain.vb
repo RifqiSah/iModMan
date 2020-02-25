@@ -2,12 +2,12 @@
 
 Public Class frmMain
 
-    Private Sub frmLists_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
         loadModJson(lstMod)
         Icon = My.Resources.Icon
     End Sub
 
-    Private Sub frmLists_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+    Private Sub frmMain_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         ' Enlarge pak
         If (isAthenaExists()) Then
             chkEnlarge.Checked = False
@@ -18,7 +18,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub frmLists_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+    Private Sub frmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         If (e.KeyData = Keys.F5) Then
             loadModJson(lstMod)
         End If
