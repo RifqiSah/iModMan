@@ -15,21 +15,21 @@ INT WINAPI GetMD5FileHash(PCHAR sFilepath, LPSTR sHash) {
 
 	hFile = CreateFile(sFilepath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, NULL);
 	if (INVALID_HANDLE_VALUE == hFile) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetMD5FileHash", (LPSTR)"CreateFile");
+		DisplayErrorEx("iCrypto:GetMD5FileHash", "CreateFile");
 
 		return 0;
 	}
 
 	// Get handle to the crypto provider
 	if (!CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetMD5FileHash", (LPSTR)"CryptAcquireContext");
+		DisplayErrorEx("iCrypto:GetMD5FileHash", "CryptAcquireContext");
 		CloseHandle(hFile);
 
 		return 0;
 	}
 
 	if (!CryptCreateHash(hProv, CALG_MD5, 0, 0, &hHash)) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetMD5FileHash", (LPSTR)"CryptCreateHash");
+		DisplayErrorEx("iCrypto:GetMD5FileHash", "CryptCreateHash");
 
 		CloseHandle(hFile);
 		CryptReleaseContext(hProv, 0);
@@ -42,7 +42,7 @@ INT WINAPI GetMD5FileHash(PCHAR sFilepath, LPSTR sHash) {
 
 	hSize = GetFileSize(hFile, NULL);
 	if (!hFile) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetMD5FileHash", (LPSTR)"GetFileSize");
+		DisplayErrorEx("iCrypto:GetMD5FileHash", "GetFileSize");
 		CloseHandle(hFile);
 
 		return 0;
@@ -50,7 +50,7 @@ INT WINAPI GetMD5FileHash(PCHAR sFilepath, LPSTR sHash) {
 
 	rgbFile = (PBYTE)LocalAlloc(LMEM_FIXED, hSize);
 	if (!rgbFile) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetMD5FileHash", (LPSTR)"LocalAlloc");
+		DisplayErrorEx("iCrypto:GetMD5FileHash", "LocalAlloc");
 		CloseHandle(hFile);
 
 		return 0;
@@ -61,7 +61,7 @@ INT WINAPI GetMD5FileHash(PCHAR sFilepath, LPSTR sHash) {
 		if (0 == cbRead) break;
 
 		if (!CryptHashData(hHash, rgbFile, cbRead, 0)) {
-			DisplayErrorEx((LPSTR)"iCrypto:cHash:GetMD5FileHash", (LPSTR)"CryptHashData");
+			DisplayErrorEx("iCrypto:GetMD5FileHash", "CryptHashData");
 
 			CryptReleaseContext(hProv, 0);
 			CryptDestroyHash(hHash);
@@ -72,7 +72,7 @@ INT WINAPI GetMD5FileHash(PCHAR sFilepath, LPSTR sHash) {
 	}
 
 	if (!bResult) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetMD5FileHash", (LPSTR)"ReadFile");
+		DisplayErrorEx("iCrypto:GetMD5FileHash", "ReadFile");
 
 		CryptReleaseContext(hProv, 0);
 		CryptDestroyHash(hHash);
@@ -93,7 +93,7 @@ INT WINAPI GetMD5FileHash(PCHAR sFilepath, LPSTR sHash) {
 		hash[strlen(hash)] = '\0';
 	}
 	else
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetMD5FileHash", (LPSTR)"CryptGetHashParam");
+		DisplayErrorEx("iCrypto:GetMD5FileHash", "CryptGetHashParam");
 
 	strcpy(sHash, hash);
 
@@ -118,21 +118,21 @@ INT WINAPI GetSHA256FileHash(PCHAR sFilepath, LPSTR sHash) {
 
     hFile = CreateFile(sFilepath, GENERIC_READ, FILE_SHARE_READ, NULL,  OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, NULL);
     if (INVALID_HANDLE_VALUE == hFile) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetSHA256FileHash", (LPSTR)"CreateFile");
+		DisplayErrorEx("iCrypto:GetSHA256FileHash", "CreateFile");
 
         return 0;
     }
 
     // Get handle to the crypto provider
     if (!CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_AES, CRYPT_VERIFYCONTEXT)) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetSHA256FileHash", (LPSTR)"CryptAcquireContext");
+		DisplayErrorEx("iCrypto:GetSHA256FileHash", "CryptAcquireContext");
         CloseHandle(hFile);
 
         return 0;
     }
 
     if (!CryptCreateHash(hProv, CALG_SHA_256, 0, 0, &hHash)) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetSHA256FileHash", (LPSTR)"CryptCreateHash");
+		DisplayErrorEx("iCrypto:GetSHA256FileHash", "CryptCreateHash");
 
         CloseHandle(hFile);
         CryptReleaseContext(hProv, 0);
@@ -145,7 +145,7 @@ INT WINAPI GetSHA256FileHash(PCHAR sFilepath, LPSTR sHash) {
 
 	hSize = GetFileSize(hFile, NULL);
 	if (!hFile) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetSHA256FileHash", (LPSTR)"GetFileSize");
+		DisplayErrorEx("iCrypto:GetSHA256FileHash", "GetFileSize");
 		CloseHandle(hFile);
 
 		return 0;
@@ -153,7 +153,7 @@ INT WINAPI GetSHA256FileHash(PCHAR sFilepath, LPSTR sHash) {
 
 	rgbFile = (PBYTE)LocalAlloc(LMEM_FIXED, hSize);
 	if (!rgbFile) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetSHA256FileHash", (LPSTR)"LocalAlloc");
+		DisplayErrorEx("iCrypto:GetSHA256FileHash", "LocalAlloc");
 		CloseHandle(hFile);
 
 		return 0;
@@ -164,7 +164,7 @@ INT WINAPI GetSHA256FileHash(PCHAR sFilepath, LPSTR sHash) {
         if (0 == cbRead) break;
 
         if (!CryptHashData(hHash, rgbFile, cbRead, 0)) {
-			DisplayErrorEx((LPSTR)"iCrypto:cHash:GetSHA256FileHash", (LPSTR)"CryptHashData");
+			DisplayErrorEx("iCrypto:GetSHA256FileHash", "CryptHashData");
 
             CryptReleaseContext(hProv, 0);
             CryptDestroyHash(hHash);
@@ -175,7 +175,7 @@ INT WINAPI GetSHA256FileHash(PCHAR sFilepath, LPSTR sHash) {
     }
 
     if (!bResult) {
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetSHA256FileHash", (LPSTR)"ReadFile");
+		DisplayErrorEx("iCrypto:GetSHA256FileHash", "ReadFile");
 
         CryptReleaseContext(hProv, 0);
         CryptDestroyHash(hHash);
@@ -196,7 +196,7 @@ INT WINAPI GetSHA256FileHash(PCHAR sFilepath, LPSTR sHash) {
 		hash[strlen(hash)] = '\0';
 	}
 	else
-		DisplayErrorEx((LPSTR)"iCrypto:cHash:GetSHA256FileHash", (LPSTR)"CryptGetHashParam");
+		DisplayErrorEx("iCrypto:GetSHA256FileHash", "CryptGetHashParam");
 
 	strcpy(sHash, hash);
 

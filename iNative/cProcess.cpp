@@ -4,7 +4,7 @@ BOOL WINAPI IsAppAplreadyRunning() {
 	BOOL ret = FALSE;
 	HANDLE hMutex = CreateMutex(NULL, TRUE, "iModMan_Mutex");
 	if (!hMutex) {
-		DisplayErrorEx((LPSTR)"iNative:cProcess", (LPSTR)"CreateMutex");
+		DisplayErrorEx("iNative:IsAppAplreadyRunning", "CreateMutex");
 	}
 
 	switch (::GetLastError()) {

@@ -4,14 +4,14 @@ VOID WINAPI GetLocalPath(LPSTR sPath) {
 	CHAR path[MAX_PATH];
 
 	if (!GetCurrentDirectory(sizeof(path), path)) {
-		DisplayError((LPSTR)"GetCurrentDirectory");
+		DisplayError("GetCurrentDirectory");
 		return;
 	}
 
 	strcpy(sPath, path);
 }
 
-VOID WINAPI DisplayError(LPTSTR lpszFunction) {
+VOID WINAPI DisplayError(LPCSTR lpszFunction) {
 	LPVOID lpMsgBuf;
 	LPVOID lpDisplayBuf;
 	DWORD dw = GetLastError();
@@ -29,7 +29,7 @@ VOID WINAPI DisplayError(LPTSTR lpszFunction) {
 	LocalFree(lpDisplayBuf);
 }
 
-VOID WINAPI DisplayErrorEx(LPSTR sModule, LPTSTR lpszFunction) {
+VOID WINAPI DisplayErrorEx(LPCSTR sModule, LPCSTR lpszFunction) {
 	LPVOID lpMsgBuf;
 	LPVOID lpDisplayBuf;
 	DWORD dw = GetLastError();
@@ -50,7 +50,8 @@ VOID WINAPI DisplayErrorEx(LPSTR sModule, LPTSTR lpszFunction) {
 	LocalFree(lpDisplayBuf);
 }
 
-VOID WINAPI WriteLog(LPSTR sModule, INT iType, LPSTR sMessage) {
+/* 1. info | 2. warning | 3.error | 4. trace | 5. debug */
+VOID WINAPI WriteLog(LPCSTR sModule, INT iType, LPCSTR sMessage, ...) {
 	CHAR sFileLog[MAX_PATH];
 	// TCHAR sModule[MAX_PATH + 1];
 	CHAR type[20];
@@ -61,7 +62,7 @@ VOID WINAPI WriteLog(LPSTR sModule, INT iType, LPSTR sMessage) {
 	// PathRemoveExtension(sModule);
 
 	strcat(sFileLog, "\\iModMan\\logs\\");
-	strcat(sFileLog, substr(sModule, 0, (INT)(strchr(sModule, ':') - sModule)));
+	strcat(sFileLog, substr((LPSTR)sModule, 0, (INT)(strchr(sModule, ':') - sModule)));
 	strcat(sFileLog, "_");
 	strcat(sFileLog, getCurrentDateTime(false));
 	strcat(sFileLog, ".log");
@@ -69,13 +70,26 @@ VOID WINAPI WriteLog(LPSTR sModule, INT iType, LPSTR sMessage) {
 	if (iType == 1) strcpy(type, "info");
 	else if (iType == 2) strcpy(type, "warning");
 	else if (iType == 3) strcpy(type, "error");
-	else strcpy(type, "unknnown");
+	else if (iType == 4) strcpy(type, "trace");
+	else if (iType == 5) strcpy(type, "debug");
+	else strcpy(type, "unknown");
+
+	// Parsing parameter
+	va_list argptr;
+	va_start(argptr, sMessage);
+
+	LPSTR Message = (LPSTR)malloc(MSG_MAX + 1);
+
+	if (_vsnprintf(Message, MSG_MAX, sMessage, argptr) == -1)
+		return;
+	// End parsing param
 
 	FILE *fp;
 	fp = fopen(sFileLog, "a+");
-
 	// [time] [module] [type] message
-	fprintf(fp, "[%s] [%s] [%s] %s\n", getCurrentDateTime(true), sModule, type, sMessage);
-
+	fprintf(fp, "[%s] [%s] [%s] %s\n", getCurrentDateTime(true), sModule, type, Message);
 	fclose(fp);
+
+	free(Message);
+	va_end(argptr);
 }

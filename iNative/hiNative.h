@@ -12,6 +12,8 @@
 #pragma warning(disable: 4309)
 #pragma warning(disable: 4172)
 
+#define MSG_MAX	2048
+
 // Internal and Simple Func
 LPSTR	WINAPI getCurrentDateTime(BOOL withTime);
 PCHAR	WINAPI substr(PCHAR arr, INT begin, INT len);
@@ -24,9 +26,10 @@ LPSTR	WINAPI RemoveFilename(LPSTR myStr);
 BOOL	WINAPI DirectoryExists(LPSTR szPath);
 
 // Exported Func
-VOID	WINAPI DisplayError(LPTSTR lpszFunction);
-VOID	WINAPI DisplayErrorEx(LPSTR sModule, LPTSTR lpszFunction);
+/* 1. info | 2. warning | 3.error | 4. trace | 5. debug */
+VOID	WINAPI WriteLog(LPCSTR sModule, INT iType, LPCSTR sMessage, ...);
+VOID	WINAPI DisplayError(LPCTSTR lpszFunction);
+VOID	WINAPI DisplayErrorEx(LPCTSTR sModule, LPCSTR lpszFunction);
 VOID	WINAPI GetLocalPath(LPSTR sPath);
 BOOL	WINAPI IsInternetAvailable();
 BOOL	WINAPI IsAppAplreadyRunning();
-VOID	WINAPI WriteLog(LPSTR sModule, INT iType, LPSTR sMessage);

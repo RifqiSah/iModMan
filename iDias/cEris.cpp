@@ -63,15 +63,16 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 		return FALSE;
 	}
 
+	WriteLog("iDias:ReadEris", 5, "Attemtping to open %s", sSource);
 	hFile = CreateFile(sSource, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) {
-		DisplayErrorEx((LPSTR)"iDias:cPack:ReadEris", (LPSTR)"CreateFile");
+		DisplayErrorEx("iDias:ReadEris", "CreateFile");
 		return FALSE;
 	}
 
 	hSize = GetFileSize(hFile, NULL);
 	if (!hSize) {
-		DisplayErrorEx((LPSTR)"iDias:cPack:ReadEris", (LPSTR)"GetFileSize");
+		DisplayErrorEx("iDias:ReadEris", "GetFileSize");
 		CloseHandle(hFile);
 
 		return FALSE;
@@ -79,22 +80,23 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 
 	lBuffer = VirtualAlloc(NULL, hSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 	if (!lBuffer) {
-		DisplayErrorEx((LPSTR)"iDias:cPack:ReadEris", (LPSTR)"VirtualAlloc");
+		DisplayErrorEx("iDias:ReadEris", "VirtualAlloc");
 		CloseHandle(hFile);
 
 		return FALSE;
 	}
 
 	if (!VirtualProtect(lBuffer, hSize, PAGE_EXECUTE_READWRITE, &oldProtection)) {
-		DisplayErrorEx((LPSTR)"iDias:cPack:ReadEris", (LPSTR)"VirtualProtect");
+		DisplayErrorEx("iDias:ReadEris", "VirtualProtect");
 		VirtualFree(lBuffer, hSize, MEM_RELEASE);
 		CloseHandle(hFile);
 
 		return FALSE;
 	}
 
+	WriteLog("iDias:ReadEris", 5, "Allocated memory: %d bytes", hSize);
 	if (!ReadFile(hFile, lBuffer, hSize, &bytesRead, NULL)) {
-		DisplayErrorEx((LPSTR)"iDias:cPack:ReadEris", (LPSTR)"ReadFile");
+		DisplayErrorEx("iDias:ReadEris", "ReadFile");
 		VirtualFree(lBuffer, hSize, MEM_RELEASE);
 		CloseHandle(hFile);
 
@@ -110,11 +112,13 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nHEADER\r\n-----\r\nMagic: %s\r\nMeta Data Offset: 0x%08X\r\n\r\n",
 		pakHeader->MagicNumber,
 		pakHeader->MetadataOffset);
+
+	WriteLog("iDias:ReadEris", 5, "Metadata offset: 0x%08X", pakHeader->MetadataOffset);
 	// -- End Header --
 
 	// -- Metadata --
 	if (!SetFilePointer(hFile, pakHeader->MetadataOffset, NULL, NULL)) {
-		DisplayErrorEx((LPSTR)"iDias:cPack:ReadEris", (LPSTR)"SetFilePointer");
+		DisplayErrorEx("iDias:ReadEris", "SetFilePointer");
 		VirtualFree(lBuffer, hSize, MEM_RELEASE);
 		CloseHandle(hFile);
 
@@ -122,7 +126,7 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	}
 
 	if (!ReadFile(hFile, lBuffer, METADATA_SIZE, &bytesRead, NULL)) {
-		DisplayErrorEx((LPSTR)"iDias:cPack:ReadEris", (LPSTR)"ReadFile");
+		DisplayErrorEx("iDias:ReadEris", "ReadFile");
 		VirtualFree(lBuffer, hSize, MEM_RELEASE);
 		CloseHandle(hFile);
 
@@ -144,5 +148,6 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	VirtualFree(lBuffer, hSize, MEM_RELEASE);
 	CloseHandle(hFile);
 
+	WriteLog("iDias:ReadEris", 5, "OK");
 	return TRUE;
 }
