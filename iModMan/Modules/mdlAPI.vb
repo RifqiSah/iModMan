@@ -14,9 +14,14 @@ Module mdlAPI
     Public Declare Function GetSHA256FileHash Lib "iCrypto.dll" (ByVal sFilePath As String, ByVal Hash As String) As Boolean
 
     Public Declare Function ReadEris Lib "iDias.dll" (ByVal sSource As String, ByVal sMessage As String) As Boolean
-    Public Declare Function ReadPak Lib "iDias.dll" (ByVal sSource As String, ByVal sMessage As String) As Boolean
-    Public Declare Function DiasPackFile Lib "iDias.dll" (ByVal sSource As String, ByVal sDestination As String) As Boolean
-    Public Declare Function DiasUnpackFile Lib "iDias.dll" (ByVal sSource As String, ByVal sDestination As String) As Boolean
+
+    Public Declare Function DnPakRead Lib "iDias.dll" (ByVal sSource As String, ByVal sMessage As String) As Boolean
+    Public Declare Function DnPakPack Lib "iDias.dll" (ByVal sSource As String, ByVal sDestination As String) As Boolean
+    Public Declare Function DnPakUnpack Lib "iDias.dll" (ByVal sSource As String, ByVal sDestination As String) As Boolean
+
+    Public Declare Function DiasPakRead Lib "iDias.dll" (ByVal sSource As String, ByVal sMessage As String) As Boolean
+    Public Declare Function DiasPakPack Lib "iDias.dll" (ByVal sSource As String, ByVal sDestination As String) As Boolean
+    Public Declare Function DiasPakUnpack Lib "iDias.dll" (ByVal sSource As String, ByVal sDestination As String) As Boolean
 
     Public Declare Sub DisplayError Lib "iNative.dll" (ByVal sFunc As String)
     Public Declare Sub DisplayErrorEx Lib "iNative.dll" (ByVal sModule As String, ByVal sFunct As String)
