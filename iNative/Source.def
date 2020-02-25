@@ -10,6 +10,7 @@ EXPORTS
 	CreateDirectoryAndSub
 	RemoveFilename
 	DirectoryExists
+	GetTempFile
 
 	; External
 	DisplayError

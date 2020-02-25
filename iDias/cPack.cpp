@@ -22,8 +22,6 @@ typedef struct _PAK_FILEINFO {
 	// UnknownB = 40 bytes
 } PAK_FILEINFO, *PPAK_FILEINFO;
 
-CHAR pakFileTemp[] = "G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\temppak.tmp";
-
 VOID dirListFiles(const CHAR *startDir)
 {
 	HANDLE hFind;
@@ -157,23 +155,37 @@ BOOL WINAPI DnPakRead(LPSTR sSource, LPSTR sMessage) {
 }
 
 BOOL WINAPI DnPakPack(LPSTR sSource, LPSTR sDestination) {
-	CHAR sFile[MAX_PATH];
+	// CHAR sFile[MAX_PATH];
+	CHAR pakFileTemp[MAX_PATH];
 	HANDLE hFile;
 	PAK_HEADER pakHeader;
 
-	strcpy(sFile, sSource);
-	hFile = CreateFile(sFile, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	WriteLog("iDias:DnPakPack", 5, "Attemtping to create %s", sDestination);
+	hFile = CreateFile(sDestination, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (hFile == INVALID_HANDLE_VALUE) {
+		DisplayErrorEx("iDias:DnPakPack", "CreateFile");
+		return FALSE;
+	}
 
 	INT fCount = 5;
 	UINT fileOffset = HEADER_SIZE;
 	PPAK_FILEINFO fInfo = new PAK_FILEINFO[fCount];
 	LPVOID fileTotalBuffer;
 
+	if (!GetTempFile(pakFileTemp)) {
+		DisplayErrorEx("iDias:DnPakPack", "GetTempFile");
+		CloseHandle(hFile);
+
+		return FALSE;
+	}
+
+	WriteLog("iDias:DnPakPack", 5, "Temp file is %s", pakFileTemp);
+	WriteLog("iDias:DnPakPack", 5, "Adding %d file(s)", fCount);
 	for (INT i = 0; i < fCount; i++) {
 		HANDLE hsFile;
 		DWORD hSize;
 
-		hsFile = CreateFile("G:\\iModMan\\bin\\iModMan\\00Resource_dv_lk_cyclones.pak\\dv_blank_model_cyclone_original.skn", GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		hsFile = CreateFile("H:\\Dragon Nest\\PAK WIP\\00Resource_dv_lk_cyclones.pak\\resource\\dv\\dv_blank_model_cyclone.skn", GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (!hsFile) {
 			DisplayErrorEx("iDias:DnPakPack", "CreateFile");
 			return FALSE;
@@ -218,7 +230,7 @@ BOOL WINAPI DnPakPack(LPSTR sSource, LPSTR sDestination) {
 		deflateEnd(&defstream);
 
 		// temporary file
-		hsFile = CreateFile(pakFileTemp, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		hsFile = CreateFile(pakFileTemp, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (hsFile == INVALID_HANDLE_VALUE) {
 			DisplayErrorEx("iDias:DnPakPack", "CreateFile");
 			CloseHandle(hsFile);
@@ -241,15 +253,9 @@ BOOL WINAPI DnPakPack(LPSTR sSource, LPSTR sDestination) {
 			return FALSE;
 		}
 
-		if (!SetFilePointer(hsFile, hsSize, NULL, NULL)) {
-			DisplayErrorEx("iDias:DnPakPack", "SetFilePointer");
-			CloseHandle(hsFile);
+		SetFilePointer(hsFile, 0, NULL, FILE_END);
 
-			free(hsBuffer);
-
-			return FALSE;
-		}
-
+		WriteLog("iDias:DnPakPack", 5, "File %d of %d", i + 1, fCount);
 		if (!WriteFile(hsFile, fileBufferOut, defstream.total_out + 1, NULL, NULL)) {
 			DisplayErrorEx("iDias:DnPakPack", "WriteFile");
 			CloseHandle(hsFile);
@@ -274,16 +280,20 @@ BOOL WINAPI DnPakPack(LPSTR sSource, LPSTR sDestination) {
 		// increment offset for pakHeader
 		fileOffset += (defstream.total_out + 1);
 	}
+	WriteLog("iDias:DnPakPack", 5, "OK");
 
 	// init pakHeader
+	WriteLog("iDias:DnPakPack", 5, "Writing PAK header");
 	pakHeader.FileCount = fCount;
 	pakHeader.FileIndexTableOffset = fileOffset;
 	strcpy(pakHeader.MagicNumber, "EyedentityGames Packing File 0.1");
 	pakHeader.Unknown = 0x0B;
-
+	
 	// writing pakHeader to file
 	WriteFile(hFile, &pakHeader, HEADER_SIZE, NULL, NULL);
+	WriteLog("iDias:DnPakPack", 5, "OK");
 
+	WriteLog("iDias:DnPakPack", 5, "Writing compressed file data");
 	HANDLE tempFile = CreateFile(pakFileTemp, GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	DWORD tempSize = GetFileSize(tempFile, NULL);
 	fileTotalBuffer = malloc(tempSize);
@@ -306,17 +316,22 @@ BOOL WINAPI DnPakPack(LPSTR sSource, LPSTR sDestination) {
 		return FALSE;
 	}
 
+	WriteLog("iDias:DnPakPack", 5, "OK");
 	free(fileTotalBuffer);
 	CloseHandle(tempFile);
 
 	DeleteFile(pakFileTemp);
 
+	WriteLog("iDias:DnPakPack", 5, "Writing fileInfo");
 	// write filePakInfo
 	for (INT i = 0; i < fCount; i++)
 		WriteFile(hFile, &fInfo[i], FILE_INFO_SIZE, NULL, NULL);
 
+	WriteLog("iDias:DnPakPack", 5, "OK");
+
 	// end all
 	CloseHandle(hFile);
+	WriteLog("iDias:DnPakPack", 5, "OK");
 	return TRUE;
 }
 
@@ -329,6 +344,7 @@ BOOL WINAPI DnPakUnpack(LPSTR sSource, LPSTR sDestination) {
 
 	PPAK_HEADER pakHeader = {};
 
+	WriteLog("iDias:DnPakUnpack", 5, "Attempting to open %s", sSource);
 	hFile = CreateFile(sSource, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) {
 		DisplayErrorEx("iDias:DnPakUnpack", "CreateFile");
@@ -359,6 +375,7 @@ BOOL WINAPI DnPakUnpack(LPSTR sSource, LPSTR sDestination) {
 		return FALSE;
 	}
 
+	WriteLog("iDias:DnPakUnpack", 5, "Allocated memory: %d bytes", hSize);
 	if (!ReadFile(hFile, lBuffer, hSize, &bytesRead, NULL)) {
 		DisplayErrorEx("iDias:DnPakUnpack", "ReadFile");
 		VirtualFree(lBuffer, hSize, MEM_RELEASE);
@@ -368,10 +385,13 @@ BOOL WINAPI DnPakUnpack(LPSTR sSource, LPSTR sDestination) {
 	}
 
 	// -- Header --
+	WriteLog("iDias:DnPakUnpack", 5, "Reading file header");
 	pakHeader = (PPAK_HEADER)lBuffer;
+	WriteLog("iDias:DnPakUnpack", 5, "OK");
 	// -- End Header --
 
 	// -- FileEntry --
+	WriteLog("iDias:DnPakUnpack", 5, "Reading file entry in 0x%08X", pakHeader->FileIndexTableOffset);
 	if (!SetFilePointer(hFile, pakHeader->FileIndexTableOffset, NULL, NULL)) {
 		DisplayErrorEx("iDias:DnPakUnpack", "SetFilePointer");
 		VirtualFree(lBuffer, hSize, MEM_RELEASE);
@@ -379,9 +399,11 @@ BOOL WINAPI DnPakUnpack(LPSTR sSource, LPSTR sDestination) {
 
 		return FALSE;
 	}
+	WriteLog("iDias:DnPakUnpack", 5, "OK");
 
 	UINT fCount = pakHeader->FileCount;
 	PPAK_FILEINFO fileEntries = new PAK_FILEINFO[fCount];
+	WriteLog("iDias:DnPakUnpack", 5, "Number of files: %d", fCount);
 
 	for (UINT i = 0; i < fCount; i++) {
 		PPAK_FILEINFO pakFileInfo = {};
@@ -445,10 +467,15 @@ BOOL WINAPI DnPakUnpack(LPSTR sSource, LPSTR sDestination) {
 
 		free(sBuffFromPak);
 		free(sBuffAfterDecompress);
+
+		WriteLog("iDias:DnPakUnpack", 5, "File %d: [0x%08X] [%d] [%d] %s", i + 1, filePointer, rawSize, realSize, virtualPath);
 	}
+	WriteLog("iDias:DnPakUnpack", 5, "OK");
 	// -- End Decompressing --
 
 	VirtualFree(lBuffer, hSize, MEM_RELEASE);
 	CloseHandle(hFile);
+
+	WriteLog("iDias:DnPakUnpack", 5, "OK");
 	return TRUE;
 }

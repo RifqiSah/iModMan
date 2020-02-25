@@ -24,6 +24,7 @@ LPSTR	WINAPI ExtractFileName(LPSTR fullPath);
 VOID	WINAPI CreateDirectoryAndSub(LPSTR path);
 LPSTR	WINAPI RemoveFilename(LPSTR myStr);
 BOOL	WINAPI DirectoryExists(LPSTR szPath);
+BOOL	WINAPI GetTempFile(LPSTR sPath);
 
 // Exported Func
 /* 1. info | 2. warning | 3.error | 4. trace | 5. debug */

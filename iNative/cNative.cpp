@@ -11,6 +11,30 @@ VOID WINAPI GetLocalPath(LPSTR sPath) {
 	strcpy(sPath, path);
 }
 
+BOOL WINAPI GetTempFile(LPSTR sPath) {
+	DWORD Ret = 0;
+
+	CHAR szTempFileName[MAX_PATH];
+	CHAR lpTempPathBuffer[MAX_PATH];
+
+	//  Gets the temp path env string (no guarantee it's a valid path).
+	Ret = GetTempPath(MAX_PATH, lpTempPathBuffer); // buffer for path 
+	if (Ret > MAX_PATH || (Ret == 0)) {
+		DisplayErrorEx("iNative:GetTempFile", "GetTempPath");
+		return FALSE;
+	}
+
+	//  Generates a temporary file name. 
+	Ret = GetTempFileName(lpTempPathBuffer, "itf_", 0, szTempFileName);  // buffer for name 
+	if (Ret == 0) {
+		DisplayErrorEx("iNative:GetTempFile", "GetTempFileName");
+		return FALSE;
+	}
+
+	strcpy(sPath, szTempFileName);
+	return TRUE;
+}
+
 VOID WINAPI DisplayError(LPCSTR lpszFunction) {
 	LPVOID lpMsgBuf;
 	LPVOID lpDisplayBuf;
