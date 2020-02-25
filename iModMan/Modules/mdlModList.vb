@@ -5,7 +5,7 @@ Module mdlModList
     Dim ood As Integer = 0
 
     Public Sub loadModJson(ByVal cListView As ListView)
-        Dim json As String = readHttpFile(My.Resources.base_mod & "/" & My.Resources.patchlist)
+        Dim json As String = readHttpFile(My.Resources.mod_url & "/" & My.Resources.mod_patchlist)
         Dim ser As JObject = JObject.Parse(json)
         Dim mod_files As JArray = ser("mod_files")
 

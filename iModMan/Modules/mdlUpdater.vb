@@ -11,7 +11,7 @@ Module mdlUpdater
         If (File.Exists(Application.StartupPath & "\iModMan\~~update.tmp")) Then File.Delete(Application.StartupPath & "\iModMan\~~update.tmp")
 
         ' Ambil file JSON nya untuk informasi
-        Dim json As String = readHttpFile(My.Resources.base_mod & "/" & My.Resources.patchlist)
+        Dim json As String = readHttpFile(My.Resources.mod_url & "/" & My.Resources.mod_patchlist)
         Dim ser As JObject = JObject.Parse(json)
         Dim main_files As JArray = ser("main_files")
 
