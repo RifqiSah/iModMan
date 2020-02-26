@@ -15,13 +15,14 @@ Mod yang akan digunakan pada iModMan adalah mod yang bersifat private, hanya ang
 - [X] Adding program icon.
 - [X] Auto update program if newest version found.
 - [ ] Remove updated mod from the lists. (?)
-- [ ] Add modules for EZ updating.
+- [X] Add modules for EZ updating.
+- [ ] Auto updater on separate app.
 - [ ] Modify basic UI, like Avansi :)
 - [ ] Integrate with Divinitor Athena.
   - [X] Auto detect Athena executable.
   - [ ] Eris mod integration (if i can contact Vahr).
 - [ ] Integrate with DNModder.
-  - [V] Autodetect DNModder modules.
+  - [X] Autodetect DNModder modules.
   - [ ] Make DNModder mod.
   - [ ] Install & uninstall DNModder.
 - [ ] Additional feature.
