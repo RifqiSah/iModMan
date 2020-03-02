@@ -7,6 +7,7 @@ Module mdlUpdater
         Dim psi As New ProcessStartInfo
 
         psi.FileName = sPath
+        psi.Arguments = "/UPDATED"
         psi.Verb = "runas"
         psi.WorkingDirectory = Path.GetDirectoryName(sPath)
         psi.UseShellExecute = False

@@ -33,21 +33,24 @@ Module mdlMain
                     frmTest.Show()
                     Application.Run()
 
+                Case "/UPDATED"
+                    frmMain.Show()
+                    ' doUpdateProg(frmMain)
+                    Application.Run()
+
                 Case Else
-                    MsgBox("Command line tidak ditemukan!", MsgBoxStyle.Critical, "Error")
+                    MsgBox("Command line '" & Cmd(1) & "' tidak ditemukan!", MsgBoxStyle.Critical, "Error")
 
             End Select
         Else ' Kosong ?
-            frmMain.Show()
-            ' doUpdateProg(frmMain)
-            Application.Run()
+            execFile(Path.Combine(Application.StartupPath, "iModMan\Updater.exe"), "/CHECK")
+            Application.Exit()
         End If
     End Sub
 
     Private Sub LoadNativeDlls()
         ' Extrnal DLL
         LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\zlibwapi.dll"))
-
 
         ' Internal DLL
         LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\iNative.dll"))

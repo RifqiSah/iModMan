@@ -8,9 +8,9 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("ModMan Updater")>
-<Assembly: AssemblyDescription("ModMan Updater")>
-<Assembly: AssemblyCompany("Alrif Tecnology")>
+<Assembly: AssemblyTitle("Informate ModMan Updater")>
+<Assembly: AssemblyDescription("Informate ModMan Updater")>
+<Assembly: AssemblyCompany("Alrif Technology")>
 <Assembly: AssemblyProduct("Informate Mod Manager")>
 <Assembly: AssemblyCopyright("©  2020 Alrif Technology. All Rights Reserved.")>
 <Assembly: AssemblyTrademark("")>
