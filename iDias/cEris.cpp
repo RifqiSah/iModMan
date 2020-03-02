@@ -6,7 +6,8 @@
 
 typedef struct _PAK_HEADER {
 	CHAR MagicNumber[8];
-	UINT8 Unknown[128];
+	DWORD UnknownOffset;
+	UINT8 Unknown[124];
 	DWORD MetadataOffset;
 	// INT Unknown;
 	// UINT FileIndexTableOffset;
@@ -109,8 +110,9 @@ BOOL WINAPI ReadEris(LPSTR sSource, LPSTR sMessage) {
 	// -- Header --
 	pakHeader = (PPAK_HEADER)lBuffer;
 
-	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nHEADER\r\n-----\r\nMagic: %s\r\nMeta Data Offset: 0x%08X\r\n\r\n",
+	msg_len += snprintf(msg + msg_len, MSGLEN - msg_len, "-----\r\nHEADER\r\n-----\r\nMagic: %s\r\n\r\nUnknown Offset: 0x%08X\r\nMeta Data Offset: 0x%08X\r\n\r\n",
 		pakHeader->MagicNumber,
+		pakHeader->UnknownOffset,
 		pakHeader->MetadataOffset);
 
 	WriteLog("iDias:ReadEris", 5, "Metadata offset: 0x%08X", pakHeader->MetadataOffset);
