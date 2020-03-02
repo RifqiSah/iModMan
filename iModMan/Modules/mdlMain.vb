@@ -1,4 +1,6 @@
-﻿Module mdlMain
+﻿Imports System.IO
+
+Module mdlMain
     Public Sub Main()
         ' Load dulu DLL nya
         AppDomain.CurrentDomain.AppendPrivatePath("iModMan")
@@ -31,23 +33,28 @@
                     frmTest.Show()
                     Application.Run()
 
+                Case "/UPDATED"
+                    frmMain.Show()
+                    ' doUpdateProg(frmMain)
+                    Application.Run()
+
                 Case Else
-                    MsgBox("Command line tidak ditemukan!", MsgBoxStyle.Critical, "Error")
+                    MsgBox("Command line '" & Cmd(1) & "' tidak ditemukan!", MsgBoxStyle.Critical, "Error")
 
             End Select
         Else ' Kosong ?
-            doUpdateProg(frmMain)
-            Application.Run()
+            execFile(Path.Combine(Application.StartupPath, "iModMan\Updater.exe"), "/CHECK")
+            Application.Exit()
         End If
     End Sub
 
     Private Sub LoadNativeDlls()
         ' Extrnal DLL
-        LoadWin32Library(Application.StartupPath & "\iModMan\zlibwapi.dll")
+        LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\zlibwapi.dll"))
 
         ' Internal DLL
-        LoadWin32Library(Application.StartupPath & "\iModMan\iNative.dll")
-        LoadWin32Library(Application.StartupPath & "\iModMan\iCrypto.dll")
-        LoadWin32Library(Application.StartupPath & "\iModMan\iDias.dll")
+        LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\iNative.dll"))
+        LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\iCrypto.dll"))
+        LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\iDias.dll"))
     End Sub
 End Module
