@@ -4,7 +4,7 @@ Imports System.Net
 
 Public Class frmDownloader
     Public fileDownloadList As New List(Of clsFFile)()
-    Dim i As Integer = -1
+
     Dim frm As Form
     Dim other As Boolean = False
 
@@ -71,8 +71,10 @@ Public Class frmDownloader
                     GoTo Lewat
                 End If
 
-                If (Path.GetExtension(filePath) = ".pak") Then ' Hanya .pak saja yang diperbesar
-                    If (Integer.Parse(ReadIniValue("Application", "PakEnlarge")) And Not isAthenaExists()) Then pakExpand(filePath)
+                If (Path.GetExtension(filePath) = ".pak") Then ' Filter file *.PAK saja
+                    If (Integer.Parse(ReadIniValue("Application", "PakEnlarge")) And Not isAthenaExists()) Then
+                        pakExpand(filePath)
+                    End If
 
                     ' Ambil file yang terbaru saja
                     keepLatestFile(fileName)
@@ -81,7 +83,7 @@ Public Class frmDownloader
                 ' MessageBox.Show("Pengunduhan sukses!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         Else
-                MessageBox.Show("Pengunduhan gagal!" & vbCrLf & e.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Pengunduhan gagal!" & vbCrLf & e.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             File.Delete(filePath)
             Application.Exit()
         End If

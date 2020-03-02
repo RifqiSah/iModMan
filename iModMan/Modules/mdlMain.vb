@@ -1,4 +1,6 @@
-﻿Module mdlMain
+﻿Imports System.IO
+
+Module mdlMain
     Public Sub Main()
         ' Load dulu DLL nya
         AppDomain.CurrentDomain.AppendPrivatePath("iModMan")
@@ -36,18 +38,20 @@
 
             End Select
         Else ' Kosong ?
-            doUpdateProg(frmMain)
+            frmMain.Show()
+            ' doUpdateProg(frmMain)
             Application.Run()
         End If
     End Sub
 
     Private Sub LoadNativeDlls()
         ' Extrnal DLL
-        LoadWin32Library(Application.StartupPath & "\iModMan\zlibwapi.dll")
+        LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\zlibwapi.dll"))
+
 
         ' Internal DLL
-        LoadWin32Library(Application.StartupPath & "\iModMan\iNative.dll")
-        LoadWin32Library(Application.StartupPath & "\iModMan\iCrypto.dll")
-        LoadWin32Library(Application.StartupPath & "\iModMan\iDias.dll")
+        LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\iNative.dll"))
+        LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\iCrypto.dll"))
+        LoadWin32Library(Path.Combine(Application.StartupPath, "iModMan\iDias.dll"))
     End Sub
 End Module

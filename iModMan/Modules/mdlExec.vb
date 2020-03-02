@@ -1,4 +1,4 @@
-﻿Imports System.Runtime.InteropServices
+﻿Imports System.IO
 
 Module mdlExec
     Public Sub execFile(sPath As String)
@@ -6,6 +6,7 @@ Module mdlExec
 
         psi.FileName = sPath
         psi.Verb = "runas"
+        psi.WorkingDirectory = Path.GetDirectoryName(sPath)
         psi.UseShellExecute = False
 
         Process.Start(psi)
