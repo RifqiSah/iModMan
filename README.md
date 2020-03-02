@@ -14,9 +14,9 @@ Mod yang akan digunakan pada iModMan adalah mod yang bersifat private, hanya ang
 - [ ] Custom file packer (Named "Dias").
 - [X] Adding program icon.
 - [X] Auto update program if newest version found.
+- [X] Auto updater on separate app.
 - [ ] Remove updated mod from the lists. (?)
 - [X] Add modules for EZ updating.
-- [ ] Auto updater on separate app.
 - [ ] Modify basic UI, like Avansi :)
 - [ ] Integrate with Divinitor Athena.
   - [X] Auto detect Athena executable.
