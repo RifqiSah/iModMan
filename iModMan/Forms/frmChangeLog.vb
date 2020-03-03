@@ -7,7 +7,7 @@ Public Class frmChangeLog
     End Sub
 
     Private Sub loadCommit()
-        Dim sha As String = "74611b0c6a71cdfaa235989119cfd39acb8fa9aa"
+        Dim sha As String = My.Resources.repo_hash
         Dim json As String = readHttpFile(My.Resources.repo_url)
         Dim commits As JArray = JArray.Parse(json)
 
