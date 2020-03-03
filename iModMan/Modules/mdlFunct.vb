@@ -51,6 +51,8 @@ Module mdlFunct
     End Function
 
     Public Function readHttpFile(ByVal sURL As String) As String
+        Dim request As HttpWebRequest = Nothing
+        Dim response As HttpWebResponse = Nothing
         Dim reader As StreamReader = Nothing
 
         frmMain.lstMod.Items.Clear()
@@ -59,15 +61,21 @@ Module mdlFunct
         Try
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
-            Dim request As HttpWebRequest = DirectCast(WebRequest.Create(sURL), HttpWebRequest)
+            request = DirectCast(WebRequest.Create(sURL), HttpWebRequest)
             request.UserAgent = "request"
-            Dim response As HttpWebResponse = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
             reader = New StreamReader(response.GetResponseStream())
         Catch ex As Exception
             MessageBox.Show("Kesalahan terjadi!" & vbCrLf & vbCrLf & "Error:" & vbCrLf & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Application.Exit()
         End Try
 
-        Return reader.ReadToEnd()
+        Dim ret As String = reader.ReadToEnd()
+
+        reader.Close()
+        response.Close()
+
+        Return ret
     End Function
 End Module
