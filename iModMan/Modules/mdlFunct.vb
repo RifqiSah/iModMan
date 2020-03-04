@@ -31,16 +31,16 @@ Module mdlFunct
             ' Hanya ketika filenya lebih dari 1 artinya user sudah mengupdate file modnya
             If (fileCount > 1) Then
                 fileInfo.Delete() ' Delete filenya
-                fileCount = fileCount - 1 ' Kurangi terus hingga 1
+                fileCount -= 1 ' Kurangi terus hingga 1
             End If
         Next
     End Sub
 
     Public Function keepLatestFilePE(ByVal cFile As clsFFile) As Integer
-        Dim AppPath As String = Application.StartupPath
+        Dim AppPath As String = Path.Combine(Application.StartupPath, cFile.getPath)
 
-        If (File.Exists(AppPath & "\" & cFile.getPath())) Then
-            If (cFile.getVersion.Replace(".", "") > FileVersionInfo.GetVersionInfo(AppPath & "\" & cFile.getPath()).FileVersion.Replace(".", "")) Then
+        If (File.Exists(AppPath)) Then
+            If (cFile.getVersion.Replace(".", "") > FileVersionInfo.GetVersionInfo(AppPath).FileVersion.Replace(".", "")) Then
                 Return 1
             End If
         Else

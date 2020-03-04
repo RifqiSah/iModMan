@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 
 Module mdlMain
+    <Obsolete>
     Public Sub Main()
         ' Load dulu DLL nya
         AppDomain.CurrentDomain.AppendPrivatePath("iModMan")

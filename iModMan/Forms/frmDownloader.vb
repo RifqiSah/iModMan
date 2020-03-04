@@ -40,7 +40,7 @@ Public Class frmDownloader
             If (other) Then
                 fPath = f.getPath()
             Else
-                fPath = Application.StartupPath & "/" & f.getPath()
+                fPath = Path.Combine(Application.StartupPath, f.getPath())
 
                 client.QueryString.Add("file_path", fPath)
                 client.QueryString.Add("file_hash", f.getHash())

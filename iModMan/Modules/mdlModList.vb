@@ -56,7 +56,7 @@ Module mdlModList
         Dim local As String
         Dim server As String = version
 
-        filePath = Application.StartupPath & "\" & sFileName
+        filePath = Path.Combine(Application.StartupPath, sFileName)
 
         ' Cek filenya apakah ada di local
         If (File.Exists(filePath)) Then
