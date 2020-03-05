@@ -15,12 +15,9 @@ Public Class frmMain
             chkEnlarge.Text = chkEnlarge.Text + " (Athena Terpasang)"
         Else
             chkEnlarge.Checked = Integer.Parse(ReadIniValue("Application", "PakEnlarge"))
-        End If
-    End Sub
 
-    Private Sub frmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
-        If (e.KeyData = Keys.F5) Then
-            loadModJson(lstMod)
+            AthenaToolStripMenuItem.Enabled = False
+            AthenaToolStripMenuItem.Text = "Athena Tidak Terpasang"
         End If
     End Sub
 
@@ -79,8 +76,31 @@ Public Class frmMain
         frmChangeLog.ShowDialog(Me)
     End Sub
 
-    Private Sub lblCommit_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblCommit.LinkClicked
+    Private Sub PerbaruiDaftarMODToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PerbaruiDaftarMODToolStripMenuItem.Click
+        loadModJson(lstMod)
+    End Sub
+
+    Private Sub LogPerubahanToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LogPerubahanToolStripMenuItem.Click
         Dim th As Threading.Thread = New Threading.Thread(AddressOf showChangeLogFrm)
         th.Start()
+    End Sub
+
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+        Application.Exit()
+    End Sub
+
+    Private Sub AthenaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AthenaToolStripMenuItem.Click
+
+    End Sub
+
+    Private Sub NormalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NormalToolStripMenuItem.Click
+
+    End Sub
+
+    Private Sub TentangToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles TentangToolStripMenuItem.Click
+        MsgBox("Dibuat oleh 'Informate'" & vbCrLf &
+               "Discord: https://discord.gg/YvpEtYd" & vbCrLf &
+               vbCrLf &
+               "Version: " & Application.ProductVersion, MsgBoxStyle.Information, "Tentang")
     End Sub
 End Class
