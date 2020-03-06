@@ -94,7 +94,11 @@ Public Class frmMain
     End Sub
 
     Private Sub NormalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NormalToolStripMenuItem.Click
-
+        If (isDragonNestExists()) Then
+            runDragonNest()
+        Else
+            MsgBox("DragonNest tidak ditemukan!", MsgBoxStyle.Critical, "Error")
+        End If
     End Sub
 
     Private Sub TentangToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles TentangToolStripMenuItem.Click
