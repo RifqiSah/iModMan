@@ -9,7 +9,7 @@ Module mdlResolver
     End Function
 
     Public Function resolveModule(sModule As String, sClassName As String) As Object
-        Dim ass As Assembly = Assembly.LoadFrom(Application.StartupPath & "\iModMan\" & sModule)
+        Dim ass As Assembly = Assembly.LoadFrom(Path.Combine(Application.StartupPath, "iModMan", sModule))
         Dim str As String = String.Format("{0}.{1}", Path.GetFileNameWithoutExtension(sModule), sClassName)
         Dim funcs As Object = ass.CreateInstance(str)
 
@@ -19,6 +19,7 @@ Module mdlResolver
     Public Function LoadWin32Library(ByVal libPath As String) As IntPtr
         If String.IsNullOrEmpty(libPath) Then Throw New ArgumentNullException("libPath")
         If Environment.Is64BitProcess Then Throw New Exception(String.Format("Can't load {0} because this is a 64-bit proccess", libPath))
+
         Dim moduleHandle As IntPtr = LoadLibrary(libPath)
 
         If moduleHandle = IntPtr.Zero Then

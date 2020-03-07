@@ -127,6 +127,7 @@
     </Compile>
     <Compile Include="Modules\mdlAthena.vb" />
     <Compile Include="Modules\mdlDnmodder.vb" />
+    <Compile Include="Modules\mdlDragonNest.vb" />
     <Compile Include="Modules\mdlHash.vb" />
     <Compile Include="Modules\mdlMain.vb" />
     <Compile Include="Modules\mdlPak.vb" />

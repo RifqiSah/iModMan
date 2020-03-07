@@ -1,8 +1,9 @@
-﻿Imports System.Text
+﻿Imports System.IO
+Imports System.Text
 
 Module mdlSettings
 
-    Private IniFile As String = Application.StartupPath & "\iModMan\settings.ini"
+    Private IniFile As String = Path.Combine(Application.StartupPath, "iModMan\settings.ini")
 
     Public Function ReadIniValue(lpBlock As String, lpKey As String) As String
         Dim Ret As Integer

@@ -31,16 +31,16 @@ Module mdlFunct
             ' Hanya ketika filenya lebih dari 1 artinya user sudah mengupdate file modnya
             If (fileCount > 1) Then
                 fileInfo.Delete() ' Delete filenya
-                fileCount = fileCount - 1 ' Kurangi terus hingga 1
+                fileCount -= 1 ' Kurangi terus hingga 1
             End If
         Next
     End Sub
 
     Public Function keepLatestFilePE(ByVal cFile As clsFFile) As Integer
-        Dim AppPath As String = Application.StartupPath
+        Dim AppPath As String = Path.Combine(Application.StartupPath, cFile.getPath)
 
-        If (File.Exists(AppPath & "\" & cFile.getPath())) Then
-            If (cFile.getVersion.Replace(".", "") > FileVersionInfo.GetVersionInfo(AppPath & "\" & cFile.getPath()).FileVersion.Replace(".", "")) Then
+        If (File.Exists(AppPath)) Then
+            If (cFile.getVersion.Replace(".", "") > FileVersionInfo.GetVersionInfo(AppPath).FileVersion.Replace(".", "")) Then
                 Return 1
             End If
         Else
@@ -51,23 +51,33 @@ Module mdlFunct
     End Function
 
     Public Function readHttpFile(ByVal sURL As String) As String
+        Dim request As HttpWebRequest = Nothing
+        Dim response As HttpWebResponse = Nothing
         Dim reader As StreamReader = Nothing
 
         frmMain.lstMod.Items.Clear()
         frmMain.chkEnlarge.CheckState = CheckState.Unchecked
 
+        WriteLog("iModMan:readHttpFile", ErrorType.debug, String.Format("Attempting to read URL {0}", sURL))
         Try
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
-            Dim request As HttpWebRequest = DirectCast(WebRequest.Create(sURL), HttpWebRequest)
+            request = DirectCast(WebRequest.Create(sURL), HttpWebRequest)
             request.UserAgent = "request"
-            Dim response As HttpWebResponse = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
             reader = New StreamReader(response.GetResponseStream())
         Catch ex As Exception
             MessageBox.Show("Kesalahan terjadi!" & vbCrLf & vbCrLf & "Error:" & vbCrLf & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Application.Exit()
+            ProgramEnd()
         End Try
 
-        Return reader.ReadToEnd()
+        Dim ret As String = reader.ReadToEnd()
+
+        reader.Close()
+        response.Close()
+
+        WriteLog("iModMan:readHttpFile", ErrorType.debug, "DONE")
+        Return ret
     End Function
 End Module

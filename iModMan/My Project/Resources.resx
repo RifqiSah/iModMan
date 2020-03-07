@@ -133,4 +133,8 @@
     <value>patchlist.json</value>
     <comment>JSON file for program and mod updates.</comment>
   </data>
+  <data name="repo_hash" xml:space="preserve">
+    <value>431d291dac57424034349e2d9e57e5ccc96d0c2a</value>
+    <comment>Current repository hash for this build.</comment>
+  </data>
 </root>

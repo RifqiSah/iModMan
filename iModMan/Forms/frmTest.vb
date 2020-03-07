@@ -41,7 +41,7 @@ Public Class frmTest
     End Sub
 
     Private Sub frmTest_Closed(sender As Object, e As EventArgs) Handles Me.Closed
-        Application.Exit()
+        ProgramEnd()
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click

@@ -2,6 +2,14 @@
 Imports System.Text
 
 Module mdlAPI
+    Public Enum ErrorType
+        info = 1
+        warning = 2
+        errors = 3
+        trace = 4
+        debug = 5
+    End Enum
+
     <DllImport("kernel32.dll", SetLastError:=True)>
     Public Function GetPrivateProfileString(ByVal lpAppName As String, ByVal lpKeyName As String, ByVal lpDefault As String, ByVal lpReturnedString As StringBuilder, ByVal nSize As Integer, ByVal lpFileName As String) As Integer
     End Function

@@ -40,12 +40,13 @@ Public Class frmDownloader
             If (other) Then
                 fPath = f.getPath()
             Else
-                fPath = Application.StartupPath & "/" & f.getPath()
+                fPath = Path.Combine(Application.StartupPath, f.getPath())
 
                 client.QueryString.Add("file_path", fPath)
                 client.QueryString.Add("file_hash", f.getHash())
             End If
 
+            WriteLog("iModMan:doUpdate", ErrorType.debug, String.Format("Downloading {0}", fPath))
             client.DownloadFileAsync(New Uri(f.getUrl()), fPath)
 
             fileDownloadList.RemoveAt(0)
@@ -79,13 +80,16 @@ Public Class frmDownloader
                     ' Ambil file yang terbaru saja
                     keepLatestFile(fileName)
                 End If
+                WriteLog("iModMan:OnDownloadComplete", ErrorType.debug, "OK")
 
                 ' MessageBox.Show("Pengunduhan sukses!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         Else
+            WriteLog("iModMan:OnDownloadComplete", ErrorType.errors, e.Error.Message)
+
             MessageBox.Show("Pengunduhan gagal!" & vbCrLf & e.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             File.Delete(filePath)
-            Application.Exit()
+            ProgramEnd()
         End If
 
 Lewat:
