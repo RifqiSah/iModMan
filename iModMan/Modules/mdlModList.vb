@@ -11,7 +11,10 @@ Module mdlModList
 
         frmMain.chkListMod.Checked = False
 
+        WriteLog("iModMan:loadModJson", ErrorType.trace, "Parsing mods data")
         For Each item As JObject In mod_files
+            WriteLog("iModMan:loadModJson", ErrorType.trace, item.SelectToken("name").ToString())
+
             Dim f As clsFFile = New clsFFile(
                 item.SelectToken("name").ToString(),
                 item.SelectToken("path").ToString(),
@@ -48,6 +51,7 @@ Module mdlModList
             frmMain.lblNumberUpdates.Text = "Semua mod telah diperbarui."
         End If
 
+        WriteLog("iModMan:loadModJson", ErrorType.trace, "OK")
         cListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
     End Sub
 

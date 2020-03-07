@@ -10,6 +10,7 @@ Module mdlExec
         psi.WorkingDirectory = Path.GetDirectoryName(sPath)
         psi.UseShellExecute = False
 
+        WriteLog("iModMan:execute", ErrorType.debug, String.Format("Executing {0} with {1}", sPath, sParam))
         Process.Start(psi)
     End Sub
 End Module

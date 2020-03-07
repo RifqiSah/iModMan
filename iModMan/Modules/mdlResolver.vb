@@ -19,6 +19,7 @@ Module mdlResolver
     Public Function LoadWin32Library(ByVal libPath As String) As IntPtr
         If String.IsNullOrEmpty(libPath) Then Throw New ArgumentNullException("libPath")
         If Environment.Is64BitProcess Then Throw New Exception(String.Format("Can't load {0} because this is a 64-bit proccess", libPath))
+
         Dim moduleHandle As IntPtr = LoadLibrary(libPath)
 
         If moduleHandle = IntPtr.Zero Then

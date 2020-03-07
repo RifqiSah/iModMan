@@ -58,6 +58,7 @@ Module mdlFunct
         frmMain.lstMod.Items.Clear()
         frmMain.chkEnlarge.CheckState = CheckState.Unchecked
 
+        WriteLog("iModMan:readHttpFile", ErrorType.debug, String.Format("Attempting to read URL {0}", sURL))
         Try
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
@@ -68,7 +69,7 @@ Module mdlFunct
             reader = New StreamReader(response.GetResponseStream())
         Catch ex As Exception
             MessageBox.Show("Kesalahan terjadi!" & vbCrLf & vbCrLf & "Error:" & vbCrLf & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Application.Exit()
+            ProgramEnd()
         End Try
 
         Dim ret As String = reader.ReadToEnd()
@@ -76,6 +77,7 @@ Module mdlFunct
         reader.Close()
         response.Close()
 
+        WriteLog("iModMan:readHttpFile", ErrorType.debug, "DONE")
         Return ret
     End Function
 End Module

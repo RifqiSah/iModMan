@@ -3,7 +3,10 @@
 Public Class frmChangeLog
     Private Sub frmChangeLog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Icon = My.Resources.Icon
+
+        WriteLog("iModMan:loadCommit", ErrorType.trace, "Checking commit lists")
         loadCommit()
+        WriteLog("iModMan:loadCommit", ErrorType.trace, "OK")
     End Sub
 
     Private Sub loadCommit()
@@ -20,6 +23,8 @@ Public Class frmChangeLog
             val.SubItems.Add(commiter.SelectToken("name"))
             val.SubItems.Add(commit.SelectToken("message"))
             val.SubItems.Add(item.SelectToken("sha"))
+
+            WriteLog("iModMan:loadCommit", ErrorType.trace, item.SelectToken("sha"))
 
             If (sha.Equals(item.SelectToken("sha").ToString())) Then
                 val.Font = New Font(lstCommit.Font, FontStyle.Bold)

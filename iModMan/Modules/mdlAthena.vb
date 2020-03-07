@@ -7,6 +7,7 @@ Module mdlAthena
     Dim AthenaDll As String = Path.Combine(Application.StartupPath, "dv-athena-launcher.dll")
 
     Public Function isAthenaExists()
+        WriteLog("iModMan:isAthenaExists", ErrorType.debug, "Checking Athena installation")
         Return Directory.Exists(AthenaFolder) And File.Exists(AthenaExe) And File.Exists(AthenaDll)
     End Function
 End Module

@@ -20,6 +20,7 @@ Module mdlDragonNest
     End Function
 
     Public Function isDragonNestExists()
+        WriteLog("iModMan:isDragonNestExists", ErrorType.debug, "Checking Dragon Nest installation")
         Return Directory.Exists(DNFolder) And
             File.Exists(DNExe) And
             File.Exists(DNLauncherExe) And
@@ -59,6 +60,6 @@ Module mdlDragonNest
         Dim param As String = String.Format("/ip:{0} /port:{1} /language:{2}", ip.TrimEnd(";"), port.TrimEnd(";"), "ENG")
         execFile(DNExe, param)
         Threading.Thread.Sleep(2000)
-        Application.Exit()
+        ProgramEnd()
     End Sub
 End Module

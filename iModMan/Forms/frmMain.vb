@@ -69,7 +69,7 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Closed(sender As Object, e As EventArgs) Handles Me.Closed
-        Application.Exit()
+        ProgramEnd()
     End Sub
 
     Private Sub showChangeLogFrm()
@@ -86,7 +86,7 @@ Public Class frmMain
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
-        Application.Exit()
+        ProgramEnd()
     End Sub
 
     Private Sub AthenaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AthenaToolStripMenuItem.Click
