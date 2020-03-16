@@ -80,7 +80,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to https://www.alriftech.com/dn/mods.
+        '''  Looks up a localized string similar to https://dn.alriftech.com/mods.
         '''</summary>
         Friend ReadOnly Property mod_url() As String
             Get
