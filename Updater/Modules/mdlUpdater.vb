@@ -52,7 +52,7 @@ Module mdlUpdater
 
     Public Sub doUpdateProg()
         ' Ambil file JSON nya untuk informasi
-        Dim json As String = readHttpFile("https://www.alriftech.com/dn/mods/patchlist.json")
+        Dim json As String = readHttpFile("https://dn.alriftech.com/mods/patchlist.json")
         Dim ser As JObject = JObject.Parse(json)
         Dim main_files As JArray = ser("main_files")
 
