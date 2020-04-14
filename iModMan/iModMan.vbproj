@@ -119,10 +119,16 @@
     <Compile Include="Forms\frmChangeLog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmTest.Designer.vb">
+    <Compile Include="Forms\Tools\frmTest.Designer.vb">
       <DependentUpon>frmTest.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmTest.vb">
+    <Compile Include="Forms\Tools\frmTest.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\frmToolsEnv.Designer.vb">
+      <DependentUpon>frmToolsEnv.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\frmToolsEnv.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\mdlAthena.vb" />
@@ -177,8 +183,11 @@
     <EmbeddedResource Include="Forms\frmDownloader.resx">
       <DependentUpon>frmDownloader.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmTest.resx">
+    <EmbeddedResource Include="Forms\Tools\frmTest.resx">
       <DependentUpon>frmTest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\frmToolsEnv.resx">
+      <DependentUpon>frmToolsEnv.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
