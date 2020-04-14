@@ -111,4 +111,8 @@ Public Class frmTest
     Private Sub btnLoadPartial_Click(sender As Object, e As EventArgs) Handles btnLoadPartial.Click
         loadPartialPaks()
     End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        frmToolsEnv.ShowDialog(Me)
+    End Sub
 End Class

@@ -38,6 +38,7 @@ Partial Class frmTest
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.btnLoadPartial = New System.Windows.Forms.Button()
         Me.cmbPartialPak = New System.Windows.Forms.ComboBox()
+        Me.Button6 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -194,11 +195,21 @@ Partial Class frmTest
         Me.cmbPartialPak.Sorted = True
         Me.cmbPartialPak.TabIndex = 0
         '
+        'Button6
+        '
+        Me.Button6.Location = New System.Drawing.Point(557, 240)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(75, 23)
+        Me.Button6.TabIndex = 10
+        Me.Button6.Text = "*.env"
+        Me.Button6.UseVisualStyleBackColor = True
+        '
         'frmTest
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(745, 281)
+        Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button5)
@@ -239,4 +250,5 @@ Partial Class frmTest
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents cmbPartialPak As ComboBox
     Friend WithEvents btnLoadPartial As Button
+    Friend WithEvents Button6 As Button
 End Class
