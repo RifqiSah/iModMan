@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include "imodman.h"
 
 VOID getDllPath(LPSTR sPath) {
 	CHAR path[MAX_PATH];
@@ -10,7 +10,7 @@ VOID getDllPath(LPSTR sPath) {
 	strcpy(sPath, path);
 }
 
-VOID ModuleInit(PVOID athena) {
+VOID ReadDNMemory() {
 	CHAR buff[MAX_PATH];
 	DWORD pId;
 	HANDLE hProc;
@@ -28,4 +28,38 @@ VOID ModuleInit(PVOID athena) {
 	// Terminta process!
 	CloseHandle(hProc);
 	TerminateProcess(GetCurrentProcess(), 0);
+}
+
+VOID TerminateAthena() {
+	DWORD parentPid = -1;
+	ULONG_PTR pbi[6];
+	ULONG ulSize = 0;
+	LONG(WINAPI * NtQueryInformationProcess)(HANDLE ProcessHandle, ULONG ProcessInformationClass, PVOID ProcessInformation, ULONG ProcessInformationLength, PULONG ReturnLength);
+	*(FARPROC*)&NtQueryInformationProcess = GetProcAddress(LoadLibraryA("ntdll.dll"), "NtQueryInformationProcess");
+	
+	if (NtQueryInformationProcess) {
+		if (NtQueryInformationProcess(GetCurrentProcess(), 0, &pbi, sizeof(pbi), &ulSize) >= 0 && ulSize == sizeof(pbi))
+			parentPid = (DWORD)pbi[5];
+	}
+	
+	if (parentPid != -1) {
+		TerminateProcess(OpenProcess(PROCESS_ALL_ACCESS, FALSE, parentPid), 0);
+	}
+}
+
+VOID SetPowerplan() {
+	PowerSetActiveScheme(0, &GUID_GAMING_MODE);
+}
+
+VOID RestorePowerplan() {
+	PowerSetActiveScheme(0, &GUID_TYPICAL_POWER_SAVINGS);
+}
+
+VOID SetPriority() {
+	SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
+}
+
+VOID ModuleInit(PVOID athena) {
+	SetPriority();
+	TerminateAthena();
 }
